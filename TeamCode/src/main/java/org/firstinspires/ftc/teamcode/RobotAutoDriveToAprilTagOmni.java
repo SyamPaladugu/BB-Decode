@@ -1,4 +1,4 @@
-/* Copyright (c) 2023 FIRST. All rights reserved.
+package org.firstinspires.ftc.teamcode;/* Copyright (c) 2023 FIRST. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted (subject to the limitations in the disclaimer below) provided that
@@ -27,7 +27,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.robotcontroller.external.samples;
+
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -86,7 +86,7 @@ import java.util.concurrent.TimeUnit;
  */
 
 @TeleOp(name="Omni Drive To AprilTag", group = "Concept")
-@Disabled
+
 public class RobotAutoDriveToAprilTagOmni extends LinearOpMode
 {
     // Adjust these numbers to suit your robot.
