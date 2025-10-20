@@ -11,20 +11,30 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 public class Intake {
-    DcMotor pivot;
+    DcMotor rollers;
     DcMotor belts;
     Telemetry telemetry;
     ElapsedTime time;
 
-    public Intake(HardwareMap map, Telemetry telemetry){
+    public Intake(HardwareMap map){
         this.telemetry = telemetry;
         belts = map.get(DcMotor.class,"belts");
-        pivot = map.get(DcMotor.class,"pivot");
-        double ticks = 5801.1;
-        pivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-
+        rollers = map.get(DcMotor.class,"rollers");
     }
+
+    public void getBall(double power){
+        rollers.setPower(power);
+        belts.setPower(power-0.3);
+        telemetry.addData("Balls picked up",rollers.getPower());
+        telemetry.update();
+    }
+
+    public void removeBall(double power){
+        rollers.setPower(-power);
+        telemetry.addData("Ball removed",rollers.getPower());
+        telemetry.update();
+    }
+
 
 
 }

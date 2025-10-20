@@ -5,6 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+
 @TeleOp (name="TestTele", group = " ")
 public class MecanumTeleOp extends LinearOpMode {
     @Override
@@ -15,7 +17,11 @@ public class MecanumTeleOp extends LinearOpMode {
         DcMotor backLeftMotor = hardwareMap.dcMotor.get("LBM");
         DcMotor frontRightMotor = hardwareMap.dcMotor.get("RFM");
         DcMotor backRightMotor = hardwareMap.dcMotor.get("RBM");
-        DcMotor pivot = hardwareMap.dcMotor.get("pp");
+        Telemetry Telemetry;
+        Intake intake = new Intake(hardwareMap);
+        Shooter shooter = new Shooter(hardwareMap);
+
+
 
         // Reverse the right side motors. This may be wrong for your setup.
         // If your robot moves backwards when commanded to go forwards,
@@ -41,19 +47,24 @@ public class MecanumTeleOp extends LinearOpMode {
             double backLeftPower = (y - x + rx) / denominator;
             double frontRightPower = (y - x - rx) / denominator;
             double backRightPower = (y + x - rx) / denominator;
-            double ticks = 5281.1;
-            pivot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            pivot.setTargetPosition((int) (ticks/2));
-            if(gamepad1.a){
-                pivot.setTargetPosition((int) (ticks/2));
-                pivot.setPower(0);
-            }
+            boolean bumperPressed = false;
 
 
             frontLeftMotor.setPower(frontLeftPower);
             backLeftMotor.setPower(backLeftPower);
             frontRightMotor.setPower(frontRightPower);
             backRightMotor.setPower(backRightPower);
+
+            double rollers = gamepad1.right_trigger;
+            intake.getBall(rollers);
+            if(gamepad2.rightBumperWasPressed()){
+                shooter.shoot();
+
+            }
+           // if()
+
+
+
         }
     }
 }
