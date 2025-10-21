@@ -4,69 +4,119 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 @TeleOp (name="TestTele", group = " ")
-public class MecanumTeleOp extends LinearOpMode {
+public class
+MecanumTeleOp extends LinearOpMode {
+    private ElapsedTime runtime = new ElapsedTime();
+    private DcMotor frontLeftDrive = null;
+    private DcMotor backLeftDrive = null;
+    private DcMotor frontRightDrive = null;
+    private DcMotor backRightDrive = null;
+
+    private DcMotor intakeMotor = null;
+
     @Override
-    public void runOpMode() throws InterruptedException {
-        // Declare our motors
-        // Make sure your ID's match your configuration
-        DcMotor frontLeftMotor = hardwareMap.dcMotor.get("LFM");
-        DcMotor backLeftMotor = hardwareMap.dcMotor.get("LBM");
-        DcMotor frontRightMotor = hardwareMap.dcMotor.get("RFM");
-        DcMotor backRightMotor = hardwareMap.dcMotor.get("RBM");
-        Telemetry Telemetry;
-        Intake intake = new Intake(hardwareMap);
-        //Shooter shooter = new Shooter(hardwareMap);
+    public void runOpMode() {
+
+        // Initialize the hardware variables. Note that the strings used here must correspond
+        // to the names assigned during the robot configuration step on the DS or RC devices.
+        frontLeftDrive = hardwareMap.get(DcMotor.class, "LFM");
+        backLeftDrive = hardwareMap.get(DcMotor.class, "LBM");
+        frontRightDrive = hardwareMap.get(DcMotor.class, "RFM");
+        backRightDrive = hardwareMap.get(DcMotor.class, "RBM");
+        intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
 
 
+        // ########################################################################################
+        // !!!            IMPORTANT Drive Information. Test your motor directions.            !!!!!
+        // ########################################################################################
+        // Most robots need the motors on one side to be reversed to drive forward.
+        // The motor reversals shown here are for a "direct drive" robot (the wheels turn the same direction as the motor shaft)
+        // If your robot has additional gear reductions or uses a right-angled drive, it's important to ensure
+        // that your motors are turning in the correct direction.  So, start out with the reversals here, BUT
+        // when you first test your robot, push the left joystick forward and observe the direction the wheels turn.
+        // Reverse the direction (flip FORWARD <-> REVERSE ) of any wheel that runs backward
+        // Keep testing until ALL the wheels move the robot forward when you push the left joystick forward.
+        frontLeftDrive.setDirection(DcMotor.Direction.REVERSE);
+        backLeftDrive.setDirection(DcMotor.Direction.REVERSE);
+        frontRightDrive.setDirection(DcMotor.Direction.FORWARD);
+        backRightDrive.setDirection(DcMotor.Direction.FORWARD);
 
-
-        // Reverse the right side motors. This may be wrong for your setup.
-        // If your robot moves backwards when commanded to go forwards,
-        // reverse the left side instead.
-        // See the note about this earlier on this page.
-        frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        // Wait for the game to start (driver presses START)
+        telemetry.addData("Status", "Initialized");
+        telemetry.update();
 
         waitForStart();
+        runtime.reset();
 
-        if (isStopRequested()) return;
-//test
+        // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            double y = -gamepad1.left_stick_y;
-            double x = gamepad1.left_stick_x * 1.1;
-            double rx = gamepad1.right_stick_x;
+            double max;
 
-            // Denominator is the largest motor power (absolute value) or 1
-            // This ensures all the powers maintain the same ratio,
-            // but only if at least one is out of the range [-1, 1]
-            double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
-            double frontLeftPower = (y + x + rx) / denominator;
-            double backLeftPower = (y - x + rx) / denominator;
-            double frontRightPower = (y - x - rx) / denominator;
-            double backRightPower = (y + x - rx) / denominator;
-            boolean bumperPressed = false;
+            // POV Mode uses left joystick to go forward & strafe, and right joystick to rotate.
+            double axial = -gamepad1.left_stick_y;  // Note: pushing stick forward gives negative value
+            double lateral = gamepad1.left_stick_x;
+            double yaw = gamepad1.right_stick_x;
 
+            // Combine the joystick requests for each axis-motion to determine each wheel's power.
+            // Set up a variable for each drive wheel to save the power level for telemetry.
+            double frontLeftPower = axial + lateral + yaw;
+            double frontRightPower = axial - lateral - yaw;
+            double backLeftPower = axial - lateral + yaw;
+            double backRightPower = axial + lateral - yaw;
 
-            frontLeftMotor.setPower(frontLeftPower);
-            backLeftMotor.setPower(backLeftPower);
-            frontRightMotor.setPower(frontRightPower);
-            backRightMotor.setPower(backRightPower);
+            // Normalize the values so no wheel power exceeds 100%
+            // This ensures that the robot maintains the desired motion.
+            max = Math.max(Math.abs(frontLeftPower), Math.abs(frontRightPower));
+            max = Math.max(max, Math.abs(backLeftPower));
+            max = Math.max(max, Math.abs(backRightPower));
+
+            if (max > 1.0) {
+                frontLeftPower /= max;
+                frontRightPower /= max;
+                backLeftPower /= max;
+                backRightPower /= max;
+            }
+
+            // This is test code:
+            //
+            // Uncomment the following code to test your motor directions.
+            // Each button should make the corresponding motor run FORWARD.
+            //   1) First get all the motors to take to correct positions on the robot
+            //      by adjusting your Robot Configuration if necessary.
+            //   2) Then make sure they run in the correct direction by modifying the
+            //      the setDirection() calls above.
+            // Once the correct motors move in the correct direction re-comment this code.
+
+            /*
+            frontLeftPower  = gamepad1.x ? 1.0 : 0.0;  // X gamepad
+            backLeftPower   = gamepad1.a ? 1.0 : 0.0;  // A gamepad
+            frontRightPower = gamepad1.y ? 1.0 : 0.0;  // Y gamepad
+            backRightPower  = gamepad1.b ? 1.0 : 0.0;  // B gamepad
+            */
+
+            // Send calculated power to wheels
+            frontLeftDrive.setPower(frontLeftPower);
+            frontRightDrive.setPower(-frontRightPower);
+            backLeftDrive.setPower(backLeftPower);
+            backRightDrive.setPower(backRightPower);
+
+            // Show the elapsed game time and wheel power.
+            telemetry.addData("Status", "Run Time: " + runtime.toString());
+            telemetry.addData("Front left/Right", "%4.2f, %4.2f", frontLeftPower, frontRightPower);
+            telemetry.addData("Back  left/Right", "%4.2f, %4.2f", backLeftPower, backRightPower);
+            telemetry.update();
 
             double rollers = gamepad1.right_trigger;
-            intake.getBall(rollers);
-            double out = gamepad1.left_trigger;
-            intake.removeBall(out);
+            double intake = gamepad1.right_trigger;
+            intakeMotor.setPower(gamepad1.right_trigger);
+            intakeMotor.setPower(-gamepad1.left_trigger);
 //            if(gamepad2.rightBumperWasPressed()){
 //                shooter.shoot();
-
-            }
-           // if()
-
-
-
         }
     }
+}

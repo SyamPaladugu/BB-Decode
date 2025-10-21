@@ -63,7 +63,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Basic: Omni Linear OpMode", group="Linear OpMode")
+@TeleOp(name="Basic: Omni Linear OpMode", group=" ")
 @Disabled
 public class BasicOmniOpMode_Linear extends LinearOpMode {
 
@@ -79,10 +79,10 @@ public class BasicOmniOpMode_Linear extends LinearOpMode {
 
         // Initialize the hardware variables. Note that the strings used here must correspond
         // to the names assigned during the robot configuration step on the DS or RC devices.
-        frontLeftDrive = hardwareMap.get(DcMotor.class, "front_left_drive");
-        backLeftDrive = hardwareMap.get(DcMotor.class, "back_left_drive");
-        frontRightDrive = hardwareMap.get(DcMotor.class, "front_right_drive");
-        backRightDrive = hardwareMap.get(DcMotor.class, "back_right_drive");
+        frontLeftDrive = hardwareMap.get(DcMotor.class, "LFM");
+        backLeftDrive = hardwareMap.get(DcMotor.class, "LBM");
+        frontRightDrive = hardwareMap.get(DcMotor.class, "RFM");
+        backRightDrive = hardwareMap.get(DcMotor.class, "RBM");
 
         // ########################################################################################
         // !!!            IMPORTANT Drive Information. Test your motor directions.            !!!!!
