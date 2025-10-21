@@ -19,7 +19,8 @@ public class MecanumTeleOp extends LinearOpMode {
         DcMotor backRightMotor = hardwareMap.dcMotor.get("RBM");
         Telemetry Telemetry;
         Intake intake = new Intake(hardwareMap);
-        Shooter shooter = new Shooter(hardwareMap);
+        //Shooter shooter = new Shooter(hardwareMap);
+
 
 
 
@@ -35,8 +36,8 @@ public class MecanumTeleOp extends LinearOpMode {
         if (isStopRequested()) return;
 
         while (opModeIsActive()) {
-            double y = -gamepad1.left_stick_y; // Remember, Y stick value is reversed
-            double x = gamepad1.left_stick_x * 1.1; // Counteract imperfect strafing
+            double y = -gamepad1.left_stick_y;
+            double x = gamepad1.left_stick_x * 1.1;
             double rx = gamepad1.right_stick_x;
 
             // Denominator is the largest motor power (absolute value) or 1
@@ -57,8 +58,10 @@ public class MecanumTeleOp extends LinearOpMode {
 
             double rollers = gamepad1.right_trigger;
             intake.getBall(rollers);
-            if(gamepad2.rightBumperWasPressed()){
-                shooter.shoot();
+            double out = gamepad1.left_trigger;
+            intake.removeBall(out);
+//            if(gamepad2.rightBumperWasPressed()){
+//                shooter.shoot();
 
             }
            // if()
@@ -67,4 +70,3 @@ public class MecanumTeleOp extends LinearOpMode {
 
         }
     }
-}
