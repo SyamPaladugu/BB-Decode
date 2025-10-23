@@ -18,6 +18,8 @@ MecanumTeleOp extends LinearOpMode {
     private DcMotor backRightDrive = null;
 
     private DcMotor intakeMotor = null;
+    private DcMotor outakeBare = null;
+    private double power;
 
     @Override
     public void runOpMode() {
@@ -29,6 +31,7 @@ MecanumTeleOp extends LinearOpMode {
         frontRightDrive = hardwareMap.get(DcMotor.class, "RFM");
         backRightDrive = hardwareMap.get(DcMotor.class, "RBM");
         intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
+        outakeBare = hardwareMap.get(DcMotor.class, "outake");
 
 
         frontLeftDrive.setDirection(DcMotor.Direction.REVERSE);
@@ -107,6 +110,22 @@ MecanumTeleOp extends LinearOpMode {
             intakeMotor.setPower(-gamepad1.left_trigger);
 //            if(gamepad2.rightBumperWasPressed()){
 //                shooter.shoot();
+
+            if (gamepad1.aWasPressed()){
+                outakeBare.setPower(power);
+            if (gamepad1.yWasReleased()){
+                power += 0.1;
+                if (power > 1.0){
+                    power = 1;
+                }
+            }
+            if (gamepad1.xWasReleased()){
+                power -= 0.1;
+                if (power <= 0){
+                    power = 0;
+                }
+            }
+            }
         }
     }
 }
