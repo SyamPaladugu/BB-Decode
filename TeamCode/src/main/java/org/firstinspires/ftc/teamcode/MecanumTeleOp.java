@@ -112,14 +112,14 @@ MecanumTeleOp extends LinearOpMode {
             if (gamepad2.rightBumperWasPressed()) {
                 outtake.calculateHoodAngle(distance);
                 outtake.shoot(power);
-            if (gamepad1.yWasReleased()) {
+                if (gamepad1.yWasReleased()) {
                     power += 0.1;
                     if (power > 1.0) {
                         power = 1;
                     }
-            }
+                }
 
-            if (gamepad1.xWasReleased()) {
+                if (gamepad1.xWasReleased()) {
                     power -= 0.1;
                     if (power <= 0) {
                         power = 0;
@@ -128,3 +128,4 @@ MecanumTeleOp extends LinearOpMode {
             }
         }
     }
+}
