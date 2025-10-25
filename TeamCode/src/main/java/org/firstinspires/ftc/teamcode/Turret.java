@@ -12,14 +12,14 @@
 //    private Servo servo;
 //    Telemetry telemetry;
 //    HardwareMap hardwareMap;
-//    //TrackAprilTag tag;
+//    TrackAprilTag tag;
 //    private double currentPos;
 //
 //    public Turret(DcMotor motor,Servo servo){
 //       this.motor = motor;
 //       this.servo = servo;
- //   }
-    //TODO: rename ts
+//    }
+//    //TODO: rename ts
 //     public void findTag(){
 //        boolean tracked = true;
 //        while (tag.stuff()[2]==0) {

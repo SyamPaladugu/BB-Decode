@@ -12,7 +12,7 @@
 //
 //import java.util.List;
 //
-//public class TrackAprilTag extends Shooter {
+//public class TrackAprilTag  {
 //
 //    private static final int DESIRED_TAG_ID = 20; // 20 for blue, 24 for red
 //

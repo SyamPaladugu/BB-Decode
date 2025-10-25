@@ -17,9 +17,10 @@ MecanumTeleOp extends LinearOpMode {
     private DcMotor frontRightDrive = null;
     private DcMotor backRightDrive = null;
 
-//    private DcMotor intakeMotor = null;
-//    private DcMotor outakeBare = null;
-//    private double power;
+    private DcMotor intakeMotor = null;
+    private double power;
+    ApriltagRange range = new ApriltagRange();
+    outtake outtake = new outtake(hardwareMap);
 
     @Override
     public void runOpMode() {
@@ -30,9 +31,7 @@ MecanumTeleOp extends LinearOpMode {
         backLeftDrive = hardwareMap.get(DcMotor.class, "LBM");
         frontRightDrive = hardwareMap.get(DcMotor.class, "RFM");
         backRightDrive = hardwareMap.get(DcMotor.class, "RBM");
-//        intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
-//        outakeBare = hardwareMap.get(DcMotor.class, "outake");
-
+        intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
 
         frontLeftDrive.setDirection(DcMotor.Direction.REVERSE);
         backLeftDrive.setDirection(DcMotor.Direction.REVERSE);
@@ -106,26 +105,26 @@ MecanumTeleOp extends LinearOpMode {
 
             double rollers = gamepad1.right_trigger;
             double intake = gamepad1.right_trigger;
-//            intakeMotor.setPower(gamepad1.right_trigger);
-//            intakeMotor.setPower(-gamepad1.left_trigger);
-//            if(gamepad2.rightBumperWasPressed()){
-//                shooter.shoot();
+            intakeMotor.setPower(gamepad1.right_trigger);
+            intakeMotor.setPower(-gamepad1.left_trigger);
+            double distance = range.getRange(24);
 
-//            if (gamepad1.aWasPressed()){
-//                outakeBare.setPower(power);
-//            if (gamepad1.yWasReleased()){
-//                power += 0.1;
-//                if (power > 1.0){
-//                    power = 1;
-//                }
-//            }
-////            if (gamepad1.xWasReleased()){
-////                power -= 0.1;
-////                if (power <= 0){
-////                    power = 0;
-////                }
-////            }
-//            }
+            if (gamepad2.rightBumperWasPressed()) {
+                outtake.calculateHoodAngle(distance);
+                outtake.shoot(power);
+            if (gamepad1.yWasReleased()) {
+                    power += 0.1;
+                    if (power > 1.0) {
+                        power = 1;
+                    }
+            }
+
+            if (gamepad1.xWasReleased()) {
+                    power -= 0.1;
+                    if (power <= 0) {
+                        power = 0;
+                    }
+                }
+            }
         }
     }
-}
