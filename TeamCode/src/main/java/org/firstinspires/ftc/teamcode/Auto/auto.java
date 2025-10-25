@@ -23,10 +23,12 @@ public class auto extends LinearOpMode {
         backLeftDrive = hardwareMap.get(DcMotor.class, "LBM");
         frontRightDrive = hardwareMap.get(DcMotor.class, "RFM");
         backRightDrive = hardwareMap.get(DcMotor.class, "RBM");
+
         frontLeftDrive.setDirection(DcMotor.Direction.REVERSE);
         backLeftDrive.setDirection(DcMotor.Direction.REVERSE);
         frontRightDrive.setDirection(DcMotor.Direction.FORWARD);
         backRightDrive.setDirection(DcMotor.Direction.FORWARD);
+
         frontLeftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         backLeftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         frontRightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -57,7 +59,7 @@ public class auto extends LinearOpMode {
         int newBRTarget = backRightDrive.getCurrentPosition() + moveCounts;
 
         frontLeftDrive.setTargetPosition(newFLTarget);
-        frontRightDrive.setTargetPosition(newFRTarget);
+       frontRightDrive.setTargetPosition(newFRTarget);
         backLeftDrive.setTargetPosition(newBLTarget);
         backRightDrive.setTargetPosition(newBRTarget);
 
