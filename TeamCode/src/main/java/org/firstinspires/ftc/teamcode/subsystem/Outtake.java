@@ -1,19 +1,14 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.subsystem;
 
 
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorController;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-public class outtake {
+public class Outtake implements Subsystem {
     private double power;
     private DcMotorEx bare;
     private Servo hoodServo;
@@ -32,7 +27,7 @@ public class outtake {
     private final double launchVelocity = 0;
     private final double heightDifference = 0;
 
-    public outtake(HardwareMap map){
+    public Outtake(HardwareMap map){
         bare = map.get(DcMotorEx.class,"outtake");
         hoodServo = map.get(Servo.class,"HoodServo");
     }
@@ -75,5 +70,18 @@ public class outtake {
     }
 
 
+    @Override
+    public void init() {
 
+    }
+
+    @Override
+    public void update() {
+
+    }
+
+    @Override
+    public void updateCtrls(Gamepad gp1, Gamepad gp2) {
+
+    }
 }

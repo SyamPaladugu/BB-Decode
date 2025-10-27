@@ -1,17 +1,13 @@
-package org.firstinspires.ftc.teamcode;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+package org.firstinspires.ftc.teamcode.subsystem;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorController;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import com.qualcomm.robotcore.hardware.Gamepad;
-import com.qualcomm.robotcore.util.Range;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-public class Intake {
-    DcMotor rollers = null;
+public class Intake  implements Subsystem {
+    DcMotor rollers;
 
     Telemetry telemetry;
     ElapsedTime time;
@@ -34,5 +30,18 @@ public class Intake {
     }
 
 
+    @Override
+    public void init() {
 
+    }
+
+    @Override
+    public void update() {
+
+    }
+
+    @Override
+    public void updateCtrls(Gamepad gp1, Gamepad gp2) {
+
+    }
 }
