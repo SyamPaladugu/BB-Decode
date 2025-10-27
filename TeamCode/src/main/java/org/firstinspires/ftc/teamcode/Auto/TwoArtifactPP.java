@@ -12,7 +12,10 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
-@Autonomous(name = "2 Artifact PP", group = "Autonomous")
+import java.security.PrivateKey;
+import java.util.Timer;
+
+@Autonomous(name = "2ArtifactPP", group = " ")
 @Configurable // Panels
 public class TwoArtifactPP extends OpMode {
 
@@ -20,6 +23,7 @@ public class TwoArtifactPP extends OpMode {
     public Follower follower; // Pedro Pathing follower instance
     private int pathState; // Current autonomous path state (state machine)
     private Paths paths; // Paths defined in the Paths class
+    private Timer actionTimer;
 
     @Override
     public void init() {
@@ -82,7 +86,11 @@ public class TwoArtifactPP extends OpMode {
             Path3 = follower
                     .pathBuilder()
                     .addPath(
-                            new BezierLine(new Pose(29.298, 84.255), new Pose(50.362, 93.638))
+                            new BezierCurve(
+                                    new Pose(29.298, 84.255),
+                                    new Pose(46.723, 83.681),
+                                    new Pose(50.362, 93.638)
+                            )
                     )
                     .setConstantHeadingInterpolation(Math.toRadians(130))
                     .build();
