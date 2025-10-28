@@ -50,8 +50,8 @@ public class Constants {
     }
 
     public static TwoWheelConstants localizerConstants = new TwoWheelConstants()
-            .forwardEncoder_HardwareMapName("leftFront")
-            .strafeEncoder_HardwareMapName("rightRear")
+            .forwardEncoder_HardwareMapName("forwardPod")
+            .strafeEncoder_HardwareMapName("strafePod")
             .IMU_HardwareMapName("imu")
             .IMU_Orientation(
                     new RevHubOrientationOnRobot(
