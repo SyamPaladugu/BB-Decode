@@ -18,9 +18,9 @@ MecanumTeleOp extends LinearOpMode {
     private DcMotor backRightDrive = null;
 
     private DcMotor intakeMotor = null;
+    private DcMotor outake = null;
     private double power;
     ApriltagRange range = new ApriltagRange();
-    Outtake outtake = new Outtake(hardwareMap);
 //    Intake intake = new Intake(hardwareMap);
 
     @Override
@@ -33,6 +33,7 @@ MecanumTeleOp extends LinearOpMode {
         frontRightDrive = hardwareMap.get(DcMotor.class, "RFM");
         backRightDrive = hardwareMap.get(DcMotor.class, "RBM");
         intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
+        outake = hardwareMap.get(DcMotor.class, "outakeMotor");
 //
         frontLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -120,8 +121,8 @@ MecanumTeleOp extends LinearOpMode {
 //                outtake.calculateHoodAngle(distance);
 //                outtake.shoot(power);
 //            }
-                if (gamepad1.yWasReleased()) {
-                    power += 0.1;
+            if (gamepad1.yWasReleased()) {
+                power += 0.1;
                     if (power > 1.0) {
                         power = 1;
                     }
@@ -134,8 +135,11 @@ MecanumTeleOp extends LinearOpMode {
                     }
                 }
             if(gamepad1.right_bumper){
-                intakeMotor.setPower(power);
+                outake.setPower(power);
             }
+
+            telemetry.addData("Power:", power);
+            telemetry.update();
 
         }
     }

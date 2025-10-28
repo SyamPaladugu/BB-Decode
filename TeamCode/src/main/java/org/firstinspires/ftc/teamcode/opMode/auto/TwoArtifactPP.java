@@ -33,6 +33,7 @@ public class TwoArtifactPP extends OpMode {
         paths = new Paths(follower); // Build paths
 
         panelsTelemetry.debug("Status", "Initialized");
+        panelsTelemetry.debug("Status", "Ready");
         panelsTelemetry.update(telemetry);
     }
 
