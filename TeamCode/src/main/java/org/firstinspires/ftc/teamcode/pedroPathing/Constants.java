@@ -43,7 +43,7 @@ public class Constants {
 
     public static Follower createFollower() {
         return new FollowerBuilder(followerConstants, hardwareMap)
-                .pathConstraints(pathConstraints)
+                .pathConstraints(pathConstrainxts)
                 .mecanumDrivetrain(driveConstants)
                 .twoWheelLocalizer(localizerConstants)
                 .build();
@@ -52,6 +52,10 @@ public class Constants {
     public static TwoWheelConstants localizerConstants = new TwoWheelConstants()
             .forwardEncoder_HardwareMapName("forwardPod")
             .strafeEncoder_HardwareMapName("strafePod")
+            .forwardPodY(5) // in inches distance from center of rotation
+            .strafePodX(5)// in inches distance from center of rotation needs to  be tuned
+//            .forwardEncoderDirection(Encoder.REVERSE)
+//            .strafeEncoderDirection(Encoder.REVERSE)
             .IMU_HardwareMapName("imu")
             .IMU_Orientation(
                     new RevHubOrientationOnRobot(
