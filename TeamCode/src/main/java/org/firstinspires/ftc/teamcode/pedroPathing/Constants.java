@@ -43,7 +43,7 @@ public class Constants {
 
     public static Follower createFollower() {
         return new FollowerBuilder(followerConstants, hardwareMap)
-                .pathConstraints(pathConstrainxts)
+                .pathConstraints(pathConstraints)
                 .mecanumDrivetrain(driveConstants)
                 .twoWheelLocalizer(localizerConstants)
                 .build();
