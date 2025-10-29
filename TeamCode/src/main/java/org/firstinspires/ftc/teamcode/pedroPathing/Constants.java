@@ -16,7 +16,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class Constants {
     public static FollowerConstants followerConstants = new FollowerConstants()
-            .mass(5); //value needs to be tuned ik lil bro
+            .mass(8.3); //ts is tuned now.
     //mass has to be in kilograms.
 
 
