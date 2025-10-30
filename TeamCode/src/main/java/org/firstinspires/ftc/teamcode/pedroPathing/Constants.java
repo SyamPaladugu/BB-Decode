@@ -16,7 +16,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class Constants {
     public static FollowerConstants followerConstants = new FollowerConstants()
-            .mass(5); //value needs to be tuned ik lil bro
+            .mass(8.3); //ts is tuned now.
     //mass has to be in kilograms.
 
 
@@ -50,8 +50,12 @@ public class Constants {
     }
 
     public static TwoWheelConstants localizerConstants = new TwoWheelConstants()
-            .forwardEncoder_HardwareMapName("forwardPod")
-            .strafeEncoder_HardwareMapName("strafePod")
+            .forwardEncoder_HardwareMapName("LFM")
+            .strafeEncoder_HardwareMapName("LBM")
+            .forwardPodY(5) // in inches distance from center of rotation
+            .strafePodX(5)// in inches distance from center of rotation needs to  be tuned
+//            .forwardEncoderDirection(Encoder.REVERSE)
+//            .strafeEncoderDirection(Encoder.REVERSE)
             .IMU_HardwareMapName("imu")
             .IMU_Orientation(
                     new RevHubOrientationOnRobot(
