@@ -26,7 +26,7 @@ MecanumTeleOp extends LinearOpMode {
     private CRServo transfer2;
     private double power;
     ApriltagRange range = new ApriltagRange();
-//    Intake intake = new Intake(hardwareMap);
+
 
     @Override
     public void runOpMode() {
@@ -39,16 +39,20 @@ MecanumTeleOp extends LinearOpMode {
         backRightDrive = hardwareMap.get(DcMotor.class, "RBM");
         intakeMotor = hardwareMap.get(DcMotor.class, "intake");
         outtake = hardwareMap.get(DcMotor.class, "outtake");
+<<<<<<< HEAD
         kicker = hardwareMap.get(Servo.class, "kicker");
         transfer = hardwareMap.get(CRServo.class, "transfer1");
         transfer2 = hardwareMap.get(CRServo.class, "transfer2");
         range.init(hardwareMap);
+=======
+        range.init();
+>>>>>>> 439d252d5d56f4e0d99241608178bb70081056d0
 //
         frontLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
+        outtake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
         frontLeftDrive.setDirection(DcMotor.Direction.REVERSE);
         backLeftDrive.setDirection(DcMotor.Direction.REVERSE);
@@ -126,10 +130,9 @@ MecanumTeleOp extends LinearOpMode {
             intakeMotor.setPower(-gamepad1.left_trigger);
             double distance = range.getRange(24);
 
-//            if (gamepad2.rightBumperWasPressed()) {
-//                outtake.calculateHoodAngle(distance);
-//                outtake.shoot(power);
-//            }
+            if (gamepad2.rightBumperWasPressed()) {
+                outtake.setPower(0.8);
+            }
             if (gamepad1.yWasReleased()) {
                 power += 0.1;
                     if (power > 1.0) {
