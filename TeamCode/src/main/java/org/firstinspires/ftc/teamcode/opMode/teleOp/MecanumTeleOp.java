@@ -2,7 +2,9 @@ package org.firstinspires.ftc.teamcode.opMode.teleOp;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.ApriltagRange;
@@ -18,6 +20,10 @@ MecanumTeleOp extends LinearOpMode {
 
     private DcMotor intakeMotor;
     private DcMotor outtake;
+
+    private Servo kicker;
+    private CRServo transfer;
+    private CRServo transfer2;
     private double power;
     ApriltagRange range = new ApriltagRange();
 //    Intake intake = new Intake(hardwareMap);
@@ -33,6 +39,9 @@ MecanumTeleOp extends LinearOpMode {
         backRightDrive = hardwareMap.get(DcMotor.class, "RBM");
         intakeMotor = hardwareMap.get(DcMotor.class, "intake");
         outtake = hardwareMap.get(DcMotor.class, "outtake");
+        kicker = hardwareMap.get(Servo.class, "kicker");
+        transfer = hardwareMap.get(CRServo.class, "transfer1");
+        transfer2 = hardwareMap.get(CRServo.class, "transfer2");
         range.init(hardwareMap);
 //
         frontLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
