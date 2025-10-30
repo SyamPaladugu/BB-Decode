@@ -50,8 +50,8 @@ public class Constants {
     }
 
     public static TwoWheelConstants localizerConstants = new TwoWheelConstants()
-            .forwardEncoder_HardwareMapName("forwardPod")
-            .strafeEncoder_HardwareMapName("strafePod")
+            .forwardEncoder_HardwareMapName("LFM")
+            .strafeEncoder_HardwareMapName("LBM")
             .forwardPodY(5) // in inches distance from center of rotation
             .strafePodX(5)// in inches distance from center of rotation needs to  be tuned
 //            .forwardEncoderDirection(Encoder.REVERSE)

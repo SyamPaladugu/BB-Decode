@@ -6,19 +6,18 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.ApriltagRange;
-import org.firstinspires.ftc.teamcode.subsystem.Outtake;
 
 @TeleOp (name="TestTele", group = " ")
 public class
 MecanumTeleOp extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
-    private DcMotor frontLeftDrive = null;
-    private DcMotor backLeftDrive = null;
-    private DcMotor frontRightDrive = null;
-    private DcMotor backRightDrive = null;
+    private DcMotor frontLeftDrive;
+    private DcMotor backLeftDrive;
+    private DcMotor frontRightDrive;
+    private DcMotor backRightDrive;
 
-    private DcMotor intakeMotor = null;
-    private DcMotor outake = null;
+    private DcMotor intakeMotor;
+    private DcMotor outtake;
     private double power;
     ApriltagRange range = new ApriltagRange();
 //    Intake intake = new Intake(hardwareMap);
@@ -32,8 +31,9 @@ MecanumTeleOp extends LinearOpMode {
         backLeftDrive = hardwareMap.get(DcMotor.class, "LBM");
         frontRightDrive = hardwareMap.get(DcMotor.class, "RFM");
         backRightDrive = hardwareMap.get(DcMotor.class, "RBM");
-        intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
-        outake = hardwareMap.get(DcMotor.class, "outakeMotor");
+        intakeMotor = hardwareMap.get(DcMotor.class, "intake");
+        outtake = hardwareMap.get(DcMotor.class, "outtake");
+        range.init(hardwareMap);
 //
         frontLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -135,7 +135,7 @@ MecanumTeleOp extends LinearOpMode {
                     }
                 }
             if(gamepad1.right_bumper){
-                outake.setPower(power);
+                outtake.setPower(power);
             }
 
             telemetry.addData("Power:", power);
