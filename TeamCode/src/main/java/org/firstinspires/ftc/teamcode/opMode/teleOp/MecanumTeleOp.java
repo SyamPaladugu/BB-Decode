@@ -24,6 +24,7 @@ MecanumTeleOp extends LinearOpMode {
     private Servo kicker;
     private CRServo transfer;
     private CRServo transfer2;
+    private Servo hood;
     private double power;
     ApriltagRange range = new ApriltagRange();
 
@@ -39,15 +40,10 @@ MecanumTeleOp extends LinearOpMode {
         backRightDrive = hardwareMap.get(DcMotor.class, "RBM");
         intakeMotor = hardwareMap.get(DcMotor.class, "intake");
         outtake = hardwareMap.get(DcMotor.class, "outtake");
-<<<<<<< HEAD
         kicker = hardwareMap.get(Servo.class, "kicker");
-        transfer = hardwareMap.get(CRServo.class, "transfer1");
-        transfer2 = hardwareMap.get(CRServo.class, "transfer2");
+        transfer = hardwareMap.get(CRServo.class, "transfer");
+        hood = hardwareMap.get(Servo.class, "hood");
         range.init(hardwareMap);
-=======
-        range.init();
->>>>>>> 439d252d5d56f4e0d99241608178bb70081056d0
-//
         frontLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -128,7 +124,7 @@ MecanumTeleOp extends LinearOpMode {
             double intake = gamepad1.right_trigger;
             intakeMotor.setPower(gamepad1.right_trigger);
             intakeMotor.setPower(-gamepad1.left_trigger);
-            double distance = range.getRange(24);
+            double distance = range.getRange(20);
 
             if (gamepad2.rightBumperWasPressed()) {
                 outtake.setPower(0.8);
@@ -152,6 +148,10 @@ MecanumTeleOp extends LinearOpMode {
 
             telemetry.addData("Power:", power);
             telemetry.update();
+            if (gamepad1.rightBumperWasPressed()){
+                outtake.setPower(1);
+
+            }
 
         }
     }

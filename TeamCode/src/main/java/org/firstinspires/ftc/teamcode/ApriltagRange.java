@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.vision.VisionPortal;
@@ -22,9 +22,9 @@ public class ApriltagRange {
     }
 
 
-    public void init(){
+    public void init(HardwareMap hardwareMap){
         // In your OpMode initialization
-        AprilTagProcessor aprilTag = new AprilTagProcessor.Builder()
+        aprilTagProcessor = new AprilTagProcessor.Builder()
                 .setDrawAxes(true)
                 .setDrawCubeProjection(true)
                 .setDrawTagOutline(true)
@@ -32,7 +32,7 @@ public class ApriltagRange {
 
         VisionPortal visionPortal = new VisionPortal.Builder()
                 .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
-                .addProcessor(aprilTag)
+                .addProcessor(aprilTagProcessor)
                 .build();
 
     }
