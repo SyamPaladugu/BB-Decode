@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode.opMode.teleOp;
 
+import android.text.TextUtils;
+
+import com.pedropathing.geometry.Pose;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -26,6 +29,13 @@ MecanumTeleOp extends LinearOpMode {
     private CRServo transfer2;
     private Servo hood;
     private double power;
+    boolean toggleshooter = false;
+    boolean togglekicker = false;
+    boolean toggletransfer = false;
+    double speed;
+    private double pos;
+    double hoodpos;
+    boolean kickerpos;
     ApriltagRange range = new ApriltagRange();
 
 
@@ -118,7 +128,6 @@ MecanumTeleOp extends LinearOpMode {
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Front left/Right", "%4.2f, %4.2f", frontLeftPower, frontRightPower);
             telemetry.addData("Back  left/Right", "%4.2f, %4.2f", backLeftPower, backRightPower);
-            telemetry.update();
 
             double rollers = gamepad1.right_trigger;
             double intake = gamepad1.right_trigger;
@@ -127,31 +136,55 @@ MecanumTeleOp extends LinearOpMode {
             double distance = range.getRange(20);
 
             if (gamepad2.rightBumperWasPressed()) {
-                outtake.setPower(0.8);
+                toggleshooter = !toggleshooter;
+                if (toggleshooter){
+                    speed = 1;
+                }
+                else {
+                    speed = 0;
+                }
             }
-            if (gamepad1.yWasReleased()) {
-                power += 0.1;
-                    if (power > 1.0) {
-                        power = 1;
-                    }
+            outtake.setPower(speed);
+
+
+            telemetry.addData("Power:", speed);
+
+
+            if (gamepad2.dpadUpWasPressed()){
+                kickerpos = false;
+                kicker.setPosition(0);
+            }
+            if (gamepad2.dpadDownWasPressed()){
+                kickerpos = true;
+                kicker.setPosition(0.3);
+            }
+            if (gamepad2.dpadRightWasPressed()){
+                toggletransfer = !toggletransfer;
+                if (toggletransfer){
+                    transfer.setPower(-1);
+                }else {
+                    transfer.setPower(0);
+                }
+            }
+            if (gamepad1.dpadUpWasPressed()){
+                hoodpos += 0.05;
+                if (hoodpos >= 1){
+                    hoodpos = 1;
                 }
 
-                if (gamepad1.xWasReleased()) {
-                    power -= 0.1;
-                    if (power <= 0) {
-                        power = 0;
-                    }
-                }
-            if(gamepad1.right_bumper){
-                outtake.setPower(power);
             }
-
-            telemetry.addData("Power:", power);
+            if (gamepad1.dpadDownWasPressed()){
+                hoodpos -=0.05;
+                if (hoodpos <= 0){
+                    hoodpos = 0;
+                }
+            }
+            hood.setPosition(hoodpos);
+            telemetry.addLine();
+            telemetry.addData("Hood Pos:", hoodpos);
+            telemetry.addLine();
+            telemetry.addData("Kicker state", kickerpos ? "Down" : "Up");
             telemetry.update();
-            if (gamepad1.rightBumperWasPressed()){
-                outtake.setPower(1);
-
-            }
 
         }
     }
