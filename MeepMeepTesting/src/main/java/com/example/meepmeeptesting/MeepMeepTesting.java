@@ -16,7 +16,7 @@ public class MeepMeepTesting {
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
                 .build();
 
-        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(-49.9, -49.7, Math.toRadians(53)))
+        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(-49.9, -49.7, Math.toRadians(55)))
                 .setTangent(Math.toRadians(45))
                 .splineToLinearHeading(new Pose2d(-12.2,-27,Math.toRadians(270)), Math.toRadians(0))
                 .waitSeconds(0.1)
