@@ -15,19 +15,6 @@ public class MeepMeepTesting {
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
                 .build();
-
-
-        //myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(56.75, 5.5, Math.toRadians(55)))
-                // Red Side Goal
-//                  .setTangent(Math.toRadians(45))
-//                .splineToLinearHeading(new Pose2d(-12.2,-27,Math.toRadians(270)), Math.toRadians(0))
-//                .waitSeconds(0.1)
-//                .lineToY(-51.1)
-//                .waitSeconds(0.1)
-//                .lineToY(-27)
-//                .waitSeconds(0.1)
-//                .splineToLinearHeading(new Pose2d(-21.9,-21.9,Math.toRadians(225)),Math.toRadians(0))
-//                .waitSeconds(0.1)
 //       RED SIDE SCORE 3
         myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(-49.9, -49.7, Math.toRadians(55)))
                 .setTangent(Math.toRadians(45))
@@ -39,14 +26,8 @@ public class MeepMeepTesting {
                 .waitSeconds(0.1)
                 .splineToLinearHeading(new Pose2d(-21.9,-21.9,Math.toRadians(225)),Math.toRadians(0))
                 .waitSeconds(0.1)
-                //.strafeToLinearHeading(11.1,Math.toRadians(270), Math.toRadians())
                 .build());
-//        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(70, 0.-7, Math.toRadians(180)))
-//                //RED AUTO FARSIDE
-//                .strafeTo(new Vector2d(0.55,-23.4))
-//                .endTrajectory()
-//                .build());
-        meepMeep.setBackground(MeepMeep.Background.FIELD_DECODE_JUICE_DARK)
+        meepMeep.setBackground(MeepMeep.Background.FIELD_DECODE_OFFICIAL)
                 .setDarkMode(true)
                 .setBackgroundAlpha(0.95f)
                 .addEntity(myBot)
