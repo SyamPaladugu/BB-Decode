@@ -21,8 +21,13 @@ public class MeepMeepTesting {
                 .splineToLinearHeading(new Pose2d(-12.2,-27,Math.toRadians(270)), Math.toRadians(0))
                 .waitSeconds(0.1)
                 .lineToY(-51.1)
+                .waitSeconds(0.1)
+                .lineToY(-27)
+                .waitSeconds(0.1)
+                .splineToLinearHeading(new Pose2d(-21.9,-21.9,Math.toRadians(225)),Math.toRadians(0))
+                .waitSeconds(0.1)
+                //.strafeToLinearHeading(11.1,Math.toRadians(270), Math.toRadians())
                 .build());
-
         meepMeep.setBackground(MeepMeep.Background.FIELD_DECODE_OFFICIAL)
                 .setDarkMode(true)
                 .setBackgroundAlpha(0.95f)
