@@ -11,8 +11,6 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.ApriltagRange;
-
 @TeleOp (name="TestTele", group = " ")
 public class
 MecanumTeleOp extends LinearOpMode {
@@ -37,7 +35,6 @@ MecanumTeleOp extends LinearOpMode {
     private double pos;
     double hoodpos;
     boolean kickerpos;
-    ApriltagRange range = new ApriltagRange();
 
 
     @Override
@@ -54,7 +51,6 @@ MecanumTeleOp extends LinearOpMode {
         kicker = hardwareMap.get(Servo.class, "kicker");
         transfer = hardwareMap.get(CRServo.class, "transfer");
         hood = hardwareMap.get(Servo.class, "hood");
-        range.init(hardwareMap);
         frontLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -134,7 +130,6 @@ MecanumTeleOp extends LinearOpMode {
             double intake = gamepad1.right_trigger;
             intakeMotor.setPower(gamepad1.right_trigger);
             intakeMotor.setPower(-gamepad1.left_trigger);
-            double distance = range.getRange(20);
 
             if (gamepad2.rightBumperWasPressed()) {
                 toggleshooter = !toggleshooter;
