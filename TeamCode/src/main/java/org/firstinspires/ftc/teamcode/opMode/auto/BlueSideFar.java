@@ -53,25 +53,25 @@ public class BlueSideFar extends LinearOpMode {
                 .waitSeconds(0.5)
                 .lineToY(-51.1)
                 .waitSeconds(0.1)
-                .lineToY(-27);
-                //.waitSeconds(0.1);
+                .lineToY(-27)
+                .waitSeconds(0.1);
         TrajectoryActionBuilder shootPos1 = intakeSpike1.endTrajectory().fresh()
-                .splineToLinearHeading(new Pose2d(-21.9, -21.9, Math.toRadians(225)), Math.toRadians(0));
-             //   .waitSeconds(2);
+                .splineToLinearHeading(new Pose2d(-21.9, -21.9, Math.toRadians(225)), Math.toRadians(0))
+                .waitSeconds(2);
         TrajectoryActionBuilder intakeSpike2 = shootPos1.endTrajectory().fresh()
                 .strafeToLinearHeading(new Vector2d(10.9, -27.7), Math.toRadians(270))
                 .waitSeconds(0.7)
                 .strafeTo(new Vector2d(11.5, -51.1))
                 .strafeTo(new Vector2d(10.9, -27.7))
-                .waitSeconds(0.1)
-                .setTangent(-225);
+                .waitSeconds(0.1);
         TrajectoryActionBuilder shootPos2 = intakeSpike2.endTrajectory().fresh()
-                .splineToLinearHeading(new Pose2d(-21.9, -21.9, Math.toRadians(225)), Math.toRadians(225));
-         //       .waitSeconds(2);
+                .setTangent(-225)
+                .splineToLinearHeading(new Pose2d(-21.9, -21.9, Math.toRadians(225)), Math.toRadians(225))
+                .waitSeconds(2);
         TrajectoryActionBuilder intakeSpike3 = shootPos2.endTrajectory().fresh()
-                .strafeToLinearHeading(new Vector2d(34, -29.3), Math.toRadians(270))
-                .strafeTo(new Vector2d(34, -51.1))
-                .strafeTo(new Vector2d(34, -27.7));
+                .strafeToLinearHeading(new Vector2d(35, -29.3), Math.toRadians(270))
+                .strafeTo(new Vector2d(35, -51.1))
+                .strafeTo(new Vector2d(35, -27.7));
         TrajectoryActionBuilder shootPos3 = intakeSpike3.endTrajectory().fresh()
                 .setTangent(-225)
                 .splineToLinearHeading(new Pose2d(-21.9, -21.9, Math.toRadians(225)), Math.toRadians(225));
@@ -82,7 +82,7 @@ public class BlueSideFar extends LinearOpMode {
         intake2 = intakeSpike2.build();
         shoot2 = shootPos2.build();
         intake3 = intakeSpike3.build();
-        shoot3 = shootPos3.build();
+        shoot3 = shootPos3.endTrajectory().build();
 
 
     }

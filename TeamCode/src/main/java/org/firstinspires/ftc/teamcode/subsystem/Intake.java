@@ -22,6 +22,10 @@ public class Intake implements Subsystem{
 
     }
 
+    public void intakeIn(double power) {
+        intakePower = power;
+    }
+
     @Override
     public void update() {
         intake.setPower(intakePower);
