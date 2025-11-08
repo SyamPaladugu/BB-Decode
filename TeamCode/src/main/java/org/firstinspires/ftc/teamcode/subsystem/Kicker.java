@@ -1,13 +1,12 @@
 package org.firstinspires.ftc.teamcode.subsystem;
 
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-public class kicker implements Subsystem{
+public class Kicker implements Subsystem{
 
     public Servo kicker;
 
@@ -17,7 +16,7 @@ public class kicker implements Subsystem{
 
     double kickerPos;
 
-    public kicker (HardwareMap hardwareMap, Telemetry telemetry) {
+    public Kicker(HardwareMap hardwareMap, Telemetry telemetry) {
         kicker = hardwareMap.get(Servo.class, "kicker");
     }
 

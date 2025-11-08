@@ -1,6 +1,9 @@
 package org.firstinspires.ftc.teamcode.subsystem;
 
-import com.acmerobotics.roadrunner.Pose2d;
+import androidx.annotation.NonNull;
+
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
+import com.acmerobotics.roadrunner.Action;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -15,13 +18,16 @@ public class Outtake implements Subsystem{
     boolean outakeToggle;
 
     public Outtake (HardwareMap hardwareMap, Telemetry telemetry){
-        hardwareMap.get(DcMotor.class, "outtake");
+        outtake  = hardwareMap.get(DcMotor.class, "outtake");
     }
+
     @Override
     public void init() {
         telemetry.addData("Outtake", "initialized");
         telemetry.update();
     }
+
+
 
     @Override
     public void update() {
