@@ -9,12 +9,14 @@ import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.RoadRunner.MecanumDrive;
 import org.firstinspires.ftc.teamcode.subsystem.Intake;
 import org.firstinspires.ftc.teamcode.subsystem.Outtake;
 import org.firstinspires.ftc.teamcode.subsystem.Kicker;
+import org.firstinspires.ftc.teamcode.subsystem.Transfer;
 
 @Config
 @Autonomous(name = "BlueFar", group = "Autonomous")
@@ -26,10 +28,11 @@ public class BlueSideFar extends LinearOpMode {
 
     Kicker kicker;
     Intake intake;
+    Transfer transfer;
     Action intake1, shoot1, intake2, shoot2, intake3, shoot3;
     boolean currentAction;
-
     enum AutoStates {
+        START,
         INTAKE1,
         SHOOT1,
         INTAKE2,
@@ -39,19 +42,26 @@ public class BlueSideFar extends LinearOpMode {
         END
     }
 
-    AutoStates state;
+     AutoStates state = AutoStates.START;
 
-    public ElapsedTime time;
+
+     ElapsedTime time = new ElapsedTime();
+
 
     @Override
     public void runOpMode() throws InterruptedException {
         follower = new MecanumDrive(hardwareMap, initialPose);
-
+        outtake = new Outtake(hardwareMap, telemetry);
+        kicker = new Kicker(hardwareMap, telemetry);
+        intake = new Intake(hardwareMap, telemetry);
+        transfer = new Transfer(hardwareMap, telemetry);
         build_paths();
+
 
 
         waitForStart();
         if (isStopRequested()) return;
+        time.startTime();
         time.reset();
 
         while (opModeIsActive()) {
@@ -72,7 +82,7 @@ public class BlueSideFar extends LinearOpMode {
                 .waitSeconds(0.1);
         TrajectoryActionBuilder shootPos1 = intakeSpike1.fresh()
                 .splineToLinearHeading(new Pose2d(-21.9, -21.9, Math.toRadians(225)), Math.toRadians(0))
-                .waitSeconds(2);
+                .waitSeconds(4);
         TrajectoryActionBuilder intakeSpike2 = shootPos1.fresh()
                 .strafeToLinearHeading(new Vector2d(10.9, -27.7), Math.toRadians(270))
                 .waitSeconds(0.7)
@@ -106,12 +116,15 @@ public class BlueSideFar extends LinearOpMode {
         TelemetryPacket packet = new TelemetryPacket();
 
         switch (state) {
+            case START:
+                state = AutoStates.INTAKE1;
             case INTAKE1:
                 currentAction = intake1.run(packet);
                 intake.intake.setPower(-1);
+                transfer.transfer.setPower(-1);
                 time.reset();
-                if (time.seconds() >= 5){
-                    intake.intake.setPower(0);
+                if (time.seconds() >= 0.7){
+
                 }
                 if (!currentAction) {
                     state = AutoStates.SHOOT1;
@@ -120,13 +133,19 @@ public class BlueSideFar extends LinearOpMode {
                 break;
             case SHOOT1:
                 currentAction = shoot1.run(packet);
+                intake.intake.setPower(0);
                 outtake.outtake.setPower(1);
-                if (time.seconds() >= 2){
+                transfer.transfer.setPower(0);
+                if (time.seconds()>= 2.8){
+                    transfer.transfer.setPower(-1);
+                }
+                if (time.seconds() >= 3.5){
                     kicker.kicker.setPosition(0);
                     time.reset();
                 }
-                if (time.seconds() >= 1.5) {
+                if (time.seconds() >= 0.5) {
                     kicker.kicker.setPosition(0.3);
+                    outtake.outtake.setPower(0);
                 }
                 if (!currentAction) {
                     state = AutoStates.INTAKE2;
@@ -134,30 +153,75 @@ public class BlueSideFar extends LinearOpMode {
                 }
                 break;
             case INTAKE2:
-                    currentAction = intake2.run(packet);
-                    intake.intake.setPower(-1);
-                    time.reset();
-                    if (time.seconds() >= 5){
-                        intake.intake.setPower(0);
-                    }
-                if (!currentAction){
+                currentAction = intake2.run(packet);
+                intake.intake.setPower(-1);
+                transfer.transfer.setPower(-1);
+                time.reset();
+                if (time.seconds() >= 1.5){
+                    intake.intake.setPower(0);
+                }
+                if (!currentAction) {
                     state = AutoStates.SHOOT3;
                     time.reset();
                 }
                 break;
-            case SHOOT3:
-                currentAction = shoot3.run(packet);
+
+            case SHOOT2:
+                currentAction = shoot2.run(packet);
+                intake.intake.setPower(0);
                 outtake.outtake.setPower(1);
-                if (time.seconds() >= 2){
+                transfer.transfer.setPower(0);
+                if (time.seconds()>= 1){
+                    transfer.transfer.setPower(-1);
+                }
+                if (time.seconds() >= 1.5){
                     kicker.kicker.setPosition(0);
                     time.reset();
                 }
-                if (time.seconds() >= 1.5){
+                if (time.seconds() >= 0.5) {
                     kicker.kicker.setPosition(0.3);
+                    outtake.outtake.setPower(0);
                 }
+                if (!currentAction) {
+                    state = AutoStates.INTAKE3;
+                    time.reset();
+                }
+                break;
 
+
+            case INTAKE3:
+                currentAction = intake3.run(packet);
+                intake.intake.setPower(-1);
+                transfer.transfer.setPower(-1);
+                time.reset();
+                if (time.seconds() >= 1.5){
+                    intake.intake.setPower(0);
+                }
                 if (!currentAction){
+                    state = AutoStates.SHOOT3;
+                }
+                break;
+
+
+            case SHOOT3:
+                currentAction = shoot3.run(packet);
+                intake.intake.setPower(0);
+                outtake.outtake.setPower(1);
+                transfer.transfer.setPower(0);
+                if (time.seconds()>= 1){
+                    transfer.transfer.setPower(-1);
+                }
+                if (time.seconds() >= 1.5){
+                    kicker.kicker.setPosition(0);
+                    time.reset();
+                }
+                if (time.seconds() >= 0.5) {
+                    kicker.kicker.setPosition(0.3);
+                    outtake.outtake.setPower(0);
+                }
+                if (!currentAction) {
                     state = AutoStates.END;
+                    time.reset();
                 }
                 break;
             case END:

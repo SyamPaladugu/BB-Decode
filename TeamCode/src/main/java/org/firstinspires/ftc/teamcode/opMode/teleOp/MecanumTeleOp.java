@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -21,7 +22,7 @@ MecanumTeleOp extends LinearOpMode {
     private DcMotor backRightDrive;
 
     private DcMotor intakeMotor;
-    private DcMotor outtake;
+    private DcMotorEx outtake;
 
     private Servo kicker;
     private CRServo transfer;
@@ -47,7 +48,7 @@ MecanumTeleOp extends LinearOpMode {
         frontRightDrive = hardwareMap.get(DcMotor.class, "RFM");
         backRightDrive = hardwareMap.get(DcMotor.class, "RBM");
         intakeMotor = hardwareMap.get(DcMotor.class, "intake");
-        outtake = hardwareMap.get(DcMotor.class, "outtake");
+        outtake = hardwareMap.get(DcMotorEx.class, "outtake");
         kicker = hardwareMap.get(Servo.class, "kicker");
         transfer = hardwareMap.get(CRServo.class, "transfer");
         hood = hardwareMap.get(Servo.class, "hood");
@@ -142,8 +143,7 @@ MecanumTeleOp extends LinearOpMode {
             }
             outtake.setPower(speed);
 
-
-            telemetry.addData("Power:", speed);
+            telemetry.addData("Power",outtake.getVelocity());
 
 
             if (gamepad2.dpadUpWasPressed()){

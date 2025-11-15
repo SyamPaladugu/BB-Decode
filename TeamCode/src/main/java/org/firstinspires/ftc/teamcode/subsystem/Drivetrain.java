@@ -19,10 +19,10 @@ public class Drivetrain implements Subsystem {
     public double lfPower = 0, lbPower = 0, rfPower = 0, rbPower = 0;
 
     public boolean bumpToggle = false;
-
+    Pose2d pose2d;
     public Drivetrain(HardwareMap map, Telemetry telemetry, Pose2d pose2d) {
         this.telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
-
+        this.pose2d = pose2d;
         lfMotor = map.get(DcMotor.class, "LFM");
         lbMotor = map.get(DcMotor.class, "LBM");
         rfMotor = map.get(DcMotor.class, "RFM");

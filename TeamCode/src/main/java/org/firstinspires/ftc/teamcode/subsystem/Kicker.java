@@ -18,6 +18,7 @@ public class Kicker implements Subsystem{
 
     public Kicker(HardwareMap hardwareMap, Telemetry telemetry) {
         kicker = hardwareMap.get(Servo.class, "kicker");
+        this.telemetry = telemetry;
     }
 
     @Override
@@ -25,15 +26,6 @@ public class Kicker implements Subsystem{
         telemetry.addData("kicker","Initialized");
         telemetry.update();
 
-    }
-
-    public void up() {
-        kickerPos = 0;
-        kickerState = false;
-    }
-    public void down() {
-        kickerPos = 0.3;
-        kickerState = true;
     }
 
     @Override

@@ -12,6 +12,7 @@ public class Intake implements Subsystem{
     public double intakePower;
     public Intake (HardwareMap hardwareMap, Telemetry telemetry){
         intake = hardwareMap.get(DcMotor.class, "intake");
+        this.telemetry = telemetry;
     }
 
 
