@@ -9,8 +9,12 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.Vision.AprilTag;
 
 @TeleOp (name="TestTele", group = " ")
 public class
@@ -20,9 +24,10 @@ MecanumTeleOp extends LinearOpMode {
     private DcMotor backLeftDrive;
     private DcMotor frontRightDrive;
     private DcMotor backRightDrive;
-
     private DcMotor intakeMotor;
     private DcMotorEx outtake;
+
+    //private AprilTag aprilTag;
 
     private Servo kicker;
     private CRServo transfer;
@@ -57,11 +62,11 @@ MecanumTeleOp extends LinearOpMode {
         frontRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         outtake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-
         frontLeftDrive.setDirection(DcMotor.Direction.REVERSE);
         backLeftDrive.setDirection(DcMotor.Direction.REVERSE);
         frontRightDrive.setDirection(DcMotor.Direction.REVERSE);
         backRightDrive.setDirection(DcMotor.Direction.FORWARD);
+
 
         // Wait for the game to start (driver presses START)
         telemetry.addData("Status", "Initialized");
@@ -183,6 +188,8 @@ MecanumTeleOp extends LinearOpMode {
             telemetry.addData("Hood Pos:", hoodpos);
             telemetry.addLine();
             telemetry.addData("Kicker state", kickerpos ? "Down" : "Up");
+            telemetry.addLine();
+            //telemetry.addData("Distance",aprilTag.getDistance(20));
             telemetry.update();
         }
     }
