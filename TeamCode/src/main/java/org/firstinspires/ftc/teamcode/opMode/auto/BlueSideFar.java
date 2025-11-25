@@ -74,32 +74,25 @@ public class BlueSideFar extends LinearOpMode {
     public void build_paths() {
         TrajectoryActionBuilder intakeSpike1 = follower.actionBuilder(initialPose)
                 .setTangent(Math.toRadians(45))
-                .splineToLinearHeading(new Pose2d(-12.2, -27, Math.toRadians(270)), Math.toRadians(0))
-                .waitSeconds(0.5)
-                .lineToY(-51.1)
-                .waitSeconds(0.1)
-                .lineToY(-27)
+                .splineToLinearHeading(new Pose2d(-23.3,-27,Math.toRadians(270)), Math.toRadians(0))
+                .splineToSplineHeading(new Pose2d(-15,-34.5,Math.toRadians(290)),Math.toRadians(290))
+                .splineToLinearHeading(new Pose2d(-14.5,-49.3,Math.toRadians(270)), Math.toRadians(200))
                 .waitSeconds(0.1);
         TrajectoryActionBuilder shootPos1 = intakeSpike1.fresh()
-                .splineToLinearHeading(new Pose2d(-21.9, -21.9, Math.toRadians(225)), Math.toRadians(0))
-                .waitSeconds(4);
+                .splineToSplineHeading(new Pose2d(-21.9,-22,Math.toRadians(225)),Math.toRadians(140))
+                .waitSeconds(5);
         TrajectoryActionBuilder intakeSpike2 = shootPos1.fresh()
-                .strafeToLinearHeading(new Vector2d(10.9, -27.7), Math.toRadians(270))
-                .waitSeconds(0.7)
-                .strafeTo(new Vector2d(11.5, -51.1))
-                .strafeTo(new Vector2d(10.9, -27.7))
-                .waitSeconds(0.1);
+                .splineToLinearHeading(new Pose2d(5.3,-27.8,Math.toRadians(290)), Math.toRadians(310))
+                .splineToSplineHeading(new Pose2d(11.5,-52.5,Math.toRadians(270)),Math.toRadians(270))
+                .waitSeconds(0.4);
         TrajectoryActionBuilder shootPos2 = intakeSpike2.fresh()
-                .setTangent(-225)
-                .splineToLinearHeading(new Pose2d(-21.9, -21.9, Math.toRadians(225)), Math.toRadians(225))
-                .waitSeconds(2);
+                .strafeToLinearHeading(new Vector2d(-22.9,-22.7), Math.toRadians(225))
+                .waitSeconds(7);
         TrajectoryActionBuilder intakeSpike3 = shootPos2.fresh()
-                .strafeToLinearHeading(new Vector2d(35, -29.3), Math.toRadians(270))
-                .strafeTo(new Vector2d(35, -51.1))
-                .strafeTo(new Vector2d(35, -27.7));
+                .splineToSplineHeading(new Pose2d(24.1,-28.6,Math.toRadians(290)), Math.toRadians(330))
+                .splineToLinearHeading(new Pose2d(34.9, -52.9,Math.toRadians(270)), Math.toRadians(270));
         TrajectoryActionBuilder shootPos3 = intakeSpike3.fresh()
-                .setTangent(-225)
-                .splineToLinearHeading(new Pose2d(-21.9, -21.9, Math.toRadians(225)), Math.toRadians(225));
+                .strafeToLinearHeading(new Vector2d(-23.8,-23.8), Math.toRadians(225));
 
 
         intake1 = intakeSpike1.build();
@@ -122,6 +115,7 @@ public class BlueSideFar extends LinearOpMode {
                 currentAction = intake1.run(packet);
                 intake.intake.setPower(-1);
                 transfer.transfer.setPower(-1);
+                kicker.kicker.setPosition(0.3);
                 time.reset();
                 if (time.seconds() >= 0.7){
 
@@ -136,10 +130,10 @@ public class BlueSideFar extends LinearOpMode {
                 intake.intake.setPower(0);
                 outtake.outtake.setPower(1);
                 transfer.transfer.setPower(0);
-                if (time.seconds()>= 2.8){
+                if (time.seconds()>= 3){
                     transfer.transfer.setPower(-1);
                 }
-                if (time.seconds() >= 3.5){
+                if (time.seconds() >= 4.5){
                     kicker.kicker.setPosition(0);
                     time.reset();
                 }
@@ -154,6 +148,7 @@ public class BlueSideFar extends LinearOpMode {
                 break;
             case INTAKE2:
                 currentAction = intake2.run(packet);
+                kicker.kicker.setPosition(0.3);
                 intake.intake.setPower(-1);
                 transfer.transfer.setPower(-1);
                 time.reset();
@@ -161,7 +156,7 @@ public class BlueSideFar extends LinearOpMode {
                     intake.intake.setPower(0);
                 }
                 if (!currentAction) {
-                    state = AutoStates.SHOOT3;
+                    state = AutoStates.SHOOT2;
                     time.reset();
                 }
                 break;
@@ -169,18 +164,21 @@ public class BlueSideFar extends LinearOpMode {
             case SHOOT2:
                 currentAction = shoot2.run(packet);
                 intake.intake.setPower(0);
-                outtake.outtake.setPower(1);
                 transfer.transfer.setPower(0);
-                if (time.seconds()>= 1){
-                    transfer.transfer.setPower(-1);
+                if (time.seconds()>= 2){
+                    outtake.outtake.setPower(1);
                 }
-                if (time.seconds() >= 1.5){
-                    kicker.kicker.setPosition(0);
+                if (time.seconds() >= 4){
+                    transfer.transfer.setPower(1);
                     time.reset();
                 }
-                if (time.seconds() >= 0.5) {
-                    kicker.kicker.setPosition(0.3);
+                if (time.seconds() >= 1) {
+                    kicker.kicker.setPosition(0);
+                }
+
+                if (time.seconds() >= 1.7){
                     outtake.outtake.setPower(0);
+                    kicker.kicker.setPosition(0.3);
                 }
                 if (!currentAction) {
                     state = AutoStates.INTAKE3;
@@ -215,7 +213,7 @@ public class BlueSideFar extends LinearOpMode {
                     kicker.kicker.setPosition(0);
                     time.reset();
                 }
-                if (time.seconds() >= 0.5) {
+                if (time.seconds() >= 0.7) {
                     kicker.kicker.setPosition(0.3);
                     outtake.outtake.setPower(0);
                 }
