@@ -7,7 +7,6 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
-@Disabled
 @TeleOp(name="VisionTest", group = " ")
 public class VisionTest extends OpMode {
 
@@ -26,6 +25,7 @@ public class VisionTest extends OpMode {
         AprilTagDetection id20 = aprilTag.getTagByID(20);
         update();
         aprilTag.displayTelemtry(id20);
+        telemetry.update();
 
 
     }

@@ -34,7 +34,7 @@ private  List<AprilTagDetection> detectedTags = new ArrayList<>();
                 .build();
 
         VisionPortal.Builder builder = new VisionPortal.Builder();
-        builder.setCamera(map.get(WebcamName.class,"Webcam1"));
+        builder.setCamera(map.get(WebcamName.class,"Webcam 1"));
         builder.setCameraResolution(new Size(640,480));
         builder.addProcessor(aprilTagProcessor);
 
@@ -84,8 +84,13 @@ private  List<AprilTagDetection> detectedTags = new ArrayList<>();
         return tag.ftcPose.range;
     }
 
+
+
+
     @Override
     public void updateCtrls(Gamepad gp1, Gamepad gp2) {
         detectedTags = aprilTagProcessor.getDetections();
+
+
     }
 }

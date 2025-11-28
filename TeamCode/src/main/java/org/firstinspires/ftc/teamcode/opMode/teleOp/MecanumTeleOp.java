@@ -136,48 +136,92 @@ MecanumTeleOp extends LinearOpMode {
             double intake = gamepad1.right_trigger;
             intakeMotor.setPower(gamepad1.right_trigger);
             intakeMotor.setPower(-gamepad1.left_trigger);
-
-            if (gamepad2.rightBumperWasPressed()) {
-                toggleshooter = !toggleshooter;
-                if (toggleshooter) {
-                    speed = 1;
-                } else {
-                    speed = 0;
+            if (gamepad1.left_bumper){
+                if (gamepad1.rightBumperWasPressed()) {
+                    toggleshooter = !toggleshooter;
+                    if (toggleshooter) {
+                        speed = 1;
+                    } else {
+                        speed = 0;
+                    }
                 }
-            }
-            if (gamepad2.dpadUpWasPressed()) {
-                kickerpos = false;
-                kicker.setPosition(0);
-            }
-
-            if (gamepad2.dpadDownWasPressed()) {
-                kickerpos = true;
-                kicker.setPosition(0.3);
-            }
-
-            if (gamepad2.dpadRightWasPressed()) {
-                toggletransfer = !toggletransfer;
-                if (toggletransfer) {
-                    transfer.setPower(-1);
-                } else {
-                    transfer.setPower(0);
-                }
-            }
-            if (gamepad1.dpadUpWasPressed()) {
-                hoodpos += 0.05;
-                if (hoodpos >= 1) {
-                    hoodpos = 1;
+                if (gamepad1.yWasPressed()) {
+                    kickerpos = false;
+                    kicker.setPosition(0);
                 }
 
-            }
+                if (gamepad1.aWasPressed()) {
+                    kickerpos = true;
+                    kicker.setPosition(0.3);
+                }
 
-            if (gamepad1.dpadDownWasPressed()) {
-                hoodpos -= 0.05;
-                if (hoodpos <= 0) {
-                    hoodpos = 0;
+                if (gamepad1.dpadRightWasPressed()) {
+                    toggletransfer = !toggletransfer;
+                    if (toggletransfer) {
+                        transfer.setPower(-1);
+                    } else {
+                        transfer.setPower(0);
+                    }
+                }
+                if (gamepad1.dpadUpWasPressed()) {
+                    hoodpos += 0.05;
+                    if (hoodpos >= 1) {
+                        hoodpos = 1;
+                    }
+
+                }
+
+                if (gamepad1.dpadDownWasPressed()) {
+                    hoodpos -= 0.05;
+                    if (hoodpos <= 0) {
+                        hoodpos = 0;
+                    }
+                }
+
+            } else {
+
+
+                if (gamepad2.rightBumperWasPressed()) {
+                    toggleshooter = !toggleshooter;
+                    if (toggleshooter) {
+                        speed = 1;
+                    } else {
+                        speed = 0;
+                    }
+                }
+                if (gamepad2.dpadUpWasPressed()) {
+                    kickerpos = false;
+                    kicker.setPosition(0);
+                }
+
+                if (gamepad2.dpadDownWasPressed()) {
+                    kickerpos = true;
+                    kicker.setPosition(0.3);
+                }
+
+                if (gamepad2.dpadRightWasPressed()) {
+                    toggletransfer = !toggletransfer;
+                    if (toggletransfer) {
+                        transfer.setPower(-1);
+                    } else {
+                        transfer.setPower(0);
+                    }
+                }
+                if (gamepad1.dpadUpWasPressed()) {
+                    hoodpos += 0.05;
+                    if (hoodpos >= 1) {
+                        hoodpos = 1;
+                    }
+
+                }
+
+                if (gamepad1.dpadDownWasPressed()) {
+                    hoodpos -= 0.05;
+                    if (hoodpos <= 0) {
+                        hoodpos = 0;
+                    }
                 }
             }
-
 
             outtake.setPower(speed);
             telemetry.addData("Power", outtake.getVelocity());
