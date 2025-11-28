@@ -34,10 +34,10 @@ public class AprilTagAlignment implements Subsystem {
     public AprilTagAlignment(HardwareMap hardwareMap, Telemetry telemetry) {
         this.telemetry = telemetry;
 
-        leftFront = hardwareMap.get(DcMotorEx.class, "leftFront");
-        rightFront = hardwareMap.get(DcMotorEx.class, "rightFront");
-        leftBack = hardwareMap.get(DcMotorEx.class, "leftBack");
-        rightBack = hardwareMap.get(DcMotorEx.class, "rightBack");
+        leftFront = hardwareMap.get(DcMotorEx.class, "LFM");
+        rightFront = hardwareMap.get(DcMotorEx.class, "RFM");
+        leftBack = hardwareMap.get(DcMotorEx.class, "LBM");
+        rightBack = hardwareMap.get(DcMotorEx.class, "RBM");
 
         leftFront.setDirection(DcMotor.Direction.REVERSE);
         leftBack.setDirection(DcMotor.Direction.REVERSE);

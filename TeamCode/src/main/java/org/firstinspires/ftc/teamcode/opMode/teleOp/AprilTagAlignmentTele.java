@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.opMode.teleOp;
 
 import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.roadrunner.Pose2d;
+import com.pedropathing.geometry.Pose;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.subsystem.AprilTagAlignment;
@@ -13,9 +15,12 @@ public class AprilTagAlignmentTele extends LinearOpMode {
     public AprilTagAlignment alignment;
     public Drivetrain drivetrain;
 
+    public Pose2d pose2d;
+
     @Override
     public void runOpMode() {
         alignment = new AprilTagAlignment(hardwareMap, telemetry);
+        drivetrain = new Drivetrain(hardwareMap, telemetry, pose2d);
         alignment.init();
         drivetrain.init();
 
