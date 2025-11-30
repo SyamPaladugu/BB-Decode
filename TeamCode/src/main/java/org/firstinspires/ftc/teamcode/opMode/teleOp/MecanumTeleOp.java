@@ -15,6 +15,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Vision.AprilTag;
+import org.firstinspires.ftc.teamcode.subsystem.AprilTagAlignment;
 
 @TeleOp (name="TestTele", group = " ")
 public class
@@ -42,9 +43,13 @@ MecanumTeleOp extends LinearOpMode {
     double hoodpos;
     boolean kickerpos;
 
+    public AprilTagAlignment alignment;
+
 
     @Override
     public void runOpMode() {
+        alignment = new AprilTagAlignment(hardwareMap, telemetry);
+        alignment.init();
 
         // Initialize the hardware variables. Note that the strings used here must correspond
         // to the names assigned during the robot configuration step on the DS or RC devices.
@@ -77,6 +82,8 @@ MecanumTeleOp extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
+            alignment.updateCtrls(gamepad1, gamepad2);
+            alignment.update();
             double max;
 
             // POV Mode uses left joystick to go forward & strafe, and right joystick to rotate.
@@ -132,8 +139,6 @@ MecanumTeleOp extends LinearOpMode {
             telemetry.addData("Front left/Right", "%4.2f, %4.2f", frontLeftPower, frontRightPower);
             telemetry.addData("Back  left/Right", "%4.2f, %4.2f", backLeftPower, backRightPower);
 
-            double rollers = gamepad1.right_trigger;
-            double intake = gamepad1.right_trigger;
             intakeMotor.setPower(gamepad1.right_trigger);
             intakeMotor.setPower(-gamepad1.left_trigger);
             if (gamepad1.left_bumper){

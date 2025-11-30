@@ -16,34 +16,40 @@ import java.util.List;
 @Config
 public class AprilTagAlignment implements Subsystem {
 
-    public DcMotorEx leftFront, rightFront, leftBack, rightBack;
+    // Motors
+    private DcMotor leftFront, rightFront, leftBack, rightBack;
 
-    public AprilTagProcessor aprilTag;
-    public VisionPortal visionPortal;
+    // Vision
+    private AprilTagProcessor aprilTag;
+    private VisionPortal visionPortal;
 
-    public static double kP = 0.03;
+    public static double kP = -0.03;
     public static int targetTagID = 20;
-    public static double angleTolerance = 2.0;
-    public static double maxPower = 0.5;
+    public static double angleTolerance = 0.01;
+    public static double maxPower = 1;
 
-    public boolean alignmentActive = false;
-    public boolean isAligned = false;
+    // State
+    private boolean alignmentActive = false;
+    private boolean isAligned = false;
 
     Telemetry telemetry;
 
     public AprilTagAlignment(HardwareMap hardwareMap, Telemetry telemetry) {
         this.telemetry = telemetry;
 
-        leftFront = hardwareMap.get(DcMotorEx.class, "LFM");
-        rightFront = hardwareMap.get(DcMotorEx.class, "RFM");
-        leftBack = hardwareMap.get(DcMotorEx.class, "LBM");
-        rightBack = hardwareMap.get(DcMotorEx.class, "RBM");
+        // Initialize motors
+        leftFront = hardwareMap.get(DcMotor.class, "LFM");
+        rightFront = hardwareMap.get(DcMotor.class, "RFM");
+        leftBack = hardwareMap.get(DcMotor.class, "LBM");
+        rightBack = hardwareMap.get(DcMotor.class, "RBM");
 
+        // Set motor directions
         leftFront.setDirection(DcMotor.Direction.REVERSE);
         leftBack.setDirection(DcMotor.Direction.REVERSE);
         rightFront.setDirection(DcMotor.Direction.REVERSE);
         rightBack.setDirection(DcMotor.Direction.FORWARD);
 
+        // Initialize vision
         aprilTag = AprilTagProcessor.easyCreateWithDefaults();
         visionPortal = VisionPortal.easyCreateWithDefaults(
                 hardwareMap.get(WebcamName.class, "Webcam 1"),
@@ -64,49 +70,42 @@ public class AprilTagAlignment implements Subsystem {
             performAlignment();
         }
 
+        // Add telemetry
         telemetry.addLine("=== AprilTag Alignment ===");
         telemetry.addData("Mode", alignmentActive ? "AUTO ALIGN" : "MANUAL");
 
-        if (isTagDetected()) {
-            telemetry.addData("Tag Detected", "ID %d", targetTagID);
-            telemetry.addData("Yaw Angle", "%.1f°", getCurrentAngle());
-            telemetry.addData("Error", "%.1f°", getCurrentAngle());
-            telemetry.addData("Aligned", isAligned ? "✓ YES" : "✗ NO");
-        } else {
-            telemetry.addLine("Target tag not visible");
-        }
+        if (alignmentActive) {
+            if (isTagDetected()) {
+                telemetry.addData("Tag Detected", "ID %d", targetTagID);
+                telemetry.addData("Aligned", isAligned ? "✓ YES" : "✗ NO");
+            } else {
+                telemetry.addLine("Target tag not visible");
+            }
 
-        // Display tuning values
-        telemetry.addLine("--- Tuning Values ---");
-        telemetry.addData("kP", kP);
-        telemetry.addData("Target Tag ID", targetTagID);
-        telemetry.addData("Angle Tolerance", angleTolerance);
-        telemetry.addData("Max Power", maxPower);
+            telemetry.addLine("--- Tuning Values ---");
+            telemetry.addData("kP", kP);
+            telemetry.addData("Target Tag ID", targetTagID);
+            telemetry.addData("Angle Tolerance", angleTolerance);
+            telemetry.addData("Max Power", maxPower);
+        }
     }
 
     @Override
     public void updateCtrls(Gamepad gp1, Gamepad gp2) {
-        if (gp1.a) {
+        if (gp1.xWasPressed()) {
             alignmentActive = true;
-        } else {
+        }
+        if(gp1.xWasReleased()) {
             alignmentActive = false;
             isAligned = false;
             stopMotors();
         }
 
-        if (isAligned && alignmentActive) {
-            gp1.rumble(500);
-        }
+        telemetry.addData("Aligned Properly", isAligned && alignmentActive);
     }
 
     public boolean isAlignmentActive() {
         return alignmentActive;
-    }
-
-    public void cancelAlignment() {
-        alignmentActive = false;
-        isAligned = false;
-        stopMotors();
     }
 
     private void performAlignment() {
@@ -118,26 +117,31 @@ public class AprilTagAlignment implements Subsystem {
             return;
         }
 
-        double currentAngle = tag.ftcPose.yaw;
-        double error = -currentAngle;
-
-        if (Math.abs(error) < angleTolerance) {
-            stopMotors();
-            isAligned = true;
-            alignmentActive = false;  // Stop alignment once achieved
-            return;
-        }
+        double x = tag.ftcPose.x;
+        double y = tag.ftcPose.y;
+        double angleToTag = Math.atan2(x, y);
+        double error = Math.toDegrees(angleToTag);
 
         double rotationPower = kP * error;
 
+        // Clamp power
         rotationPower = Math.max(-maxPower, Math.min(maxPower, rotationPower));
 
+        // Apply rotation
         leftFront.setPower(-rotationPower);
         leftBack.setPower(-rotationPower);
         rightFront.setPower(rotationPower);
         rightBack.setPower(rotationPower);
 
-        isAligned = false;
+        telemetry.addData("x", x);
+        telemetry.addData("y",y);
+        telemetry.addData("power", rotationPower);
+        telemetry.addData("error angle", (angleToTag));
+        if (Math.abs(error) < angleTolerance) {
+            isAligned = true;
+        } else {
+            isAligned = false;
+        }
     }
 
     private void stopMotors() {

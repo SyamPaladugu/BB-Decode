@@ -67,19 +67,6 @@ public class Drivetrain implements Subsystem {
 
     @Override
     public void updateCtrls(Gamepad gp1, Gamepad gp2) {
-        /*if (!gp2.left_bumper) {*/
-//            if (gp1.right_trigger >= 0.1) {
-//                setDriveVectors(-gp1.left_stick_y * 0.3, gp1.left_stick_x * 0.4, gp1.right_stick_x * 0.3);
-//            } else {
-//                setDriveVectors(-gp1.left_stick_y, gp1.left_stick_x, gp1.right_stick_x);
-//            }
-        /*} else {
-            if (gp2.left_stick_button || gp2.right_stick_button) {
-                setDriveVectors(-gp2.left_stick_y * 0.3, gp2.left_stick_x * 0.4, gp2.right_stick_x * 0.3);
-            } else {
-                setDriveVectors(-gp2.left_stick_y, gp2.left_stick_x, gp2.right_stick_x); // not supposed to be slow
-            }
-        }*/
 
         if (gp1.rightBumperWasPressed()) {
             bumpToggle = !bumpToggle;
