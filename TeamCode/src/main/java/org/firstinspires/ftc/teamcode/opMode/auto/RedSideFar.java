@@ -79,9 +79,11 @@ public class RedSideFar extends LinearOpMode {
                 .splineToSplineHeading(new Pose2d(-12,48.1,Math.toRadians(77)),Math.toRadians(100))
                 .waitSeconds(0.1);
         TrajectoryActionBuilder shootPos1 = intakeSpike1.fresh()
+                .setTangent(Math.toRadians(270))
                 .splineToSplineHeading(new Pose2d(-23.6,23.3,Math.toRadians(135)),Math.toRadians(220))
                 .waitSeconds(5);
         TrajectoryActionBuilder intakeSpike2 = shootPos1.fresh()
+                .setTangent(Math.toRadians(270))
                 .splineToLinearHeading(new Pose2d(7,27.8,Math.toRadians(70)), Math.toRadians(60))
                 .splineToSplineHeading(new Pose2d(12,44,Math.toRadians(88)),Math.toRadians(90))
                 .waitSeconds(0.4);
@@ -89,6 +91,7 @@ public class RedSideFar extends LinearOpMode {
                 .strafeToLinearHeading(new Vector2d(-23.3,23.1), Math.toRadians(135))
                 .waitSeconds(3.2);
         TrajectoryActionBuilder intakeSpike3 = shootPos2.fresh()
+                .setTangent(Math.toRadians(270))
                 .splineToSplineHeading(new Pose2d(33,28.6,Math.toRadians(70)), Math.toRadians(60))
                 .splineToLinearHeading(new Pose2d(37, 46,Math.toRadians(88)), Math.toRadians(280))
                 .waitSeconds(0.3);

@@ -13,6 +13,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.RoadRunner.MecanumDrive;
+import org.firstinspires.ftc.teamcode.RoadRunner.PoseStorage;
 import org.firstinspires.ftc.teamcode.subsystem.Intake;
 import org.firstinspires.ftc.teamcode.subsystem.Outtake;
 import org.firstinspires.ftc.teamcode.subsystem.Kicker;
@@ -66,7 +67,18 @@ public class BlueSideFar extends LinearOpMode {
         time.reset();
 
         while (opModeIsActive()) {
+            follower.updatePoseEstimate();
+
             update();
+
+            Pose2d currentPose = follower.localizer.getPose();
+            telemetry.addData("State", state);
+            telemetry.addData("X", currentPose.position.x);
+            telemetry.addData("Y", currentPose.position.y);
+            telemetry.addData("Heading", Math.toDegrees(currentPose.heading.toDouble()));
+            telemetry.addData("Current State", state.name());
+            telemetry.addData("State Time", "%.2f sec", time.seconds());
+            telemetry.update();
         }
 
 
@@ -79,9 +91,11 @@ public class BlueSideFar extends LinearOpMode {
                 .splineToSplineHeading(new Pose2d(-15,-34.5,Math.toRadians(290)),Math.toRadians(290))
                 .waitSeconds(0.1);
         TrajectoryActionBuilder shootPos1 = intakeSpike1.fresh()
+                .setTangent(Math.toRadians(45))
                 .splineToSplineHeading(new Pose2d(-21.9,-22,Math.toRadians(225)),Math.toRadians(140))
                 .waitSeconds(5);
         TrajectoryActionBuilder intakeSpike2 = shootPos1.fresh()
+                .setTangent(Math.toRadians(45))
                 .splineToLinearHeading(new Pose2d(5.3,-27.8,Math.toRadians(290)), Math.toRadians(310))
                 .splineToSplineHeading(new Pose2d(11.5,-50,Math.toRadians(270)),Math.toRadians(270))
                 .waitSeconds(0.4);
@@ -89,6 +103,7 @@ public class BlueSideFar extends LinearOpMode {
                 .strafeToLinearHeading(new Vector2d(-22.9,-22.7), Math.toRadians(225))
                 .waitSeconds(3.2);
         TrajectoryActionBuilder intakeSpike3 = shootPos2.fresh()
+                .setTangent(Math.toRadians(45))
                 .splineToSplineHeading(new Pose2d(24.1,-28.6,Math.toRadians(290)), Math.toRadians(330))
                 .splineToLinearHeading(new Pose2d(37, -48.5,Math.toRadians(290)), Math.toRadians(280));
         TrajectoryActionBuilder shootPos3 = intakeSpike3.fresh()
@@ -96,7 +111,6 @@ public class BlueSideFar extends LinearOpMode {
                 .waitSeconds(4.7);
         TrajectoryActionBuilder parkPos = shootPos3.fresh()
                 .strafeToLinearHeading(new Vector2d(0,-48.8),Math.toRadians(180));
-
 
         intake1 = intakeSpike1.build();
         shoot1 = shootPos1.build();
@@ -116,6 +130,7 @@ public class BlueSideFar extends LinearOpMode {
             case START:
                 time.reset();
                 state = AutoStates.INTAKE1;
+
             case INTAKE1:
                 currentAction = intake1.run(packet);
                 intake.intake.setPower(-1);
@@ -125,6 +140,7 @@ public class BlueSideFar extends LinearOpMode {
                 if (time.seconds() >= 1){
                     transfer.transfer.setPower(0);
                 }
+
                 if (!currentAction) {
                     state = AutoStates.SHOOT1;
                     time.reset();
@@ -150,6 +166,7 @@ public class BlueSideFar extends LinearOpMode {
                 if (!currentAction) {
                     state = AutoStates.INTAKE2;
                     time.reset();
+
                 }
                 break;
             case INTAKE2:
@@ -221,6 +238,8 @@ public class BlueSideFar extends LinearOpMode {
                 currentAction = park.run(packet);
                 outtake.outtake.setPower(0);
                 if (!currentAction){
+                    PoseStorage.currentPose = follower.localizer.getPose();
+                    PoseStorage.poseFromAuto = true;
                     state = AutoStates.END;
                     time.reset();
                 }

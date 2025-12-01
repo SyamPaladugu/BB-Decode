@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.opMode.teleOp;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.pedropathing.geometry.Pose;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -14,6 +15,7 @@ import org.firstinspires.ftc.teamcode.subsystem.AprilTagAlignment;
 import org.firstinspires.ftc.teamcode.subsystem.Drivetrain;
 
 @TeleOp(name = "AprilTagAlignmentTele", group = " ")
+@Disabled
 public class AprilTagAlignmentTele extends LinearOpMode {
 
     public AprilTagAlignment alignment;
