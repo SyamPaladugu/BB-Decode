@@ -20,9 +20,9 @@ import org.firstinspires.ftc.teamcode.subsystem.Kicker;
 import org.firstinspires.ftc.teamcode.subsystem.Transfer;
 
 @Config
-@Autonomous(name = "RedFar", group = "Autonomous")
-public class RedSideFar extends LinearOpMode {
-    Pose2d initialPose = new Pose2d(-49.5, 49.5, Math.toRadians(305));
+@Autonomous(name = "BlueFarSlow", group = " ")
+public class SpeedRunAuto extends LinearOpMode {
+    Pose2d initialPose = new Pose2d(-49.9, -49.7, Math.toRadians(55));
 
     MecanumDrive follower;
     Outtake outtake;
@@ -67,7 +67,18 @@ public class RedSideFar extends LinearOpMode {
         time.reset();
 
         while (opModeIsActive()) {
+            follower.updatePoseEstimate();
+
             update();
+
+            Pose2d currentPose = follower.localizer.getPose();
+            telemetry.addData("State", state);
+            telemetry.addData("X", currentPose.position.x);
+            telemetry.addData("Y", currentPose.position.y);
+            telemetry.addData("Heading", Math.toDegrees(currentPose.heading.toDouble()));
+            telemetry.addData("Current State", state.name());
+            telemetry.addData("State Time", "%.2f sec", time.seconds());
+            telemetry.update();
         }
 
 
@@ -75,40 +86,29 @@ public class RedSideFar extends LinearOpMode {
 
     public void build_paths() {
         TrajectoryActionBuilder intakeSpike1 = follower.actionBuilder(initialPose)
-                .setTangent(Math.toRadians(270))
-                .splineToLinearHeading(new Pose2d(-23.3,29,Math.toRadians(70)), Math.toRadians(0))
-                .splineToSplineHeading(new Pose2d(-12,48.1,Math.toRadians(77)),Math.toRadians(100))
+                .setTangent(Math.toRadians(45))
+                .splineToLinearHeading(new Pose2d(-23.3,-27,Math.toRadians(270)), Math.toRadians(0))
+                .splineToSplineHeading(new Pose2d(-15,-34.5,Math.toRadians(290)),Math.toRadians(255))
                 .waitSeconds(0.1);
         TrajectoryActionBuilder shootPos1 = intakeSpike1.fresh()
-                .setTangent(Math.toRadians(270))
-                .splineToSplineHeading(new Pose2d(-23.6,23.3,Math.toRadians(135)),Math.toRadians(220))
+                .setTangent(Math.toRadians(45))
+                .splineToSplineHeading(new Pose2d(-21.9,-22,Math.toRadians(225)),Math.toRadians(140))
                 .waitSeconds(5);
         TrajectoryActionBuilder intakeSpike2 = shootPos1.fresh()
-                .setTangent(Math.toRadians(270))
-                .splineToLinearHeading(new Pose2d(7,27.8,Math.toRadians(70)), Math.toRadians(60))
-                .splineToSplineHeading(new Pose2d(12,44,Math.toRadians(88)),Math.toRadians(90))
+                .setTangent(Math.toRadians(45))
+                .splineToLinearHeading(new Pose2d(5.3,-27.8,Math.toRadians(290)), Math.toRadians(310))
+                .splineToSplineHeading(new Pose2d(11.5,-50,Math.toRadians(270)),Math.toRadians(270))
                 .waitSeconds(0.4);
         TrajectoryActionBuilder shootPos2 = intakeSpike2.fresh()
-                .strafeToLinearHeading(new Vector2d(-23.3,23.1), Math.toRadians(135))
+                .strafeToLinearHeading(new Vector2d(-22.9,-22.7), Math.toRadians(225))
                 .waitSeconds(3.2);
-        TrajectoryActionBuilder intakeSpike3 = shootPos2.fresh()
-                .setTangent(Math.toRadians(270))
-                .splineToSplineHeading(new Pose2d(33,28.6,Math.toRadians(70)), Math.toRadians(60))
-                .splineToLinearHeading(new Pose2d(37, 46,Math.toRadians(88)), Math.toRadians(280))
-                .waitSeconds(0.3);
-        TrajectoryActionBuilder shootPos3 = intakeSpike3.fresh()
-                .strafeToLinearHeading(new Vector2d(-23.8,23.8), Math.toRadians(135))
-                .waitSeconds(3.5);
-        TrajectoryActionBuilder parkPos = shootPos3.fresh()
-                .strafeToLinearHeading(new Vector2d(0,48.8),Math.toRadians(180));
-
+        TrajectoryActionBuilder parkPos = intakeSpike2.fresh()
+                .strafeToLinearHeading(new Vector2d(0,-48.8),Math.toRadians(180));
 
         intake1 = intakeSpike1.build();
         shoot1 = shootPos1.build();
         intake2 = intakeSpike2.build();
         shoot2 = shootPos2.build();
-        intake3 = intakeSpike3.build();
-        shoot3 = shootPos3.build();
         park = parkPos.build();
 
 
@@ -204,44 +204,6 @@ public class RedSideFar extends LinearOpMode {
                     kicker.kicker.setPosition(0.3);
                 }
                 if (!currentAction) {
-                    state = AutoStates.INTAKE3;
-                    time.reset();
-                }
-                break;
-
-
-            case INTAKE3:
-                currentAction = intake3.run(packet);
-                intake.intake.setPower(-1);
-                transfer.transfer.setPower(-1);
-
-                if (!currentAction){
-                    state = AutoStates.SHOOT3;
-                    time.reset();
-                }
-                break;
-
-
-            case SHOOT3:
-                currentAction = shoot3.run(packet);
-                if (time.seconds()>=1){
-                    intake.intake.setPower(0);
-                }
-
-                if (time.seconds() >= 2.25){
-                    outtake.outtake.setPower(1);
-                }
-                if (time.seconds()>=4.3){
-                    transfer.transfer.setPower(-1);
-                    intake.intake.setPower(-0.7);
-                }
-                if (time.seconds() >= 5){
-                    kicker.kicker.setPosition(0);
-                }
-                if (time.seconds() >= 5.7) {
-                    kicker.kicker.setPosition(0.3);
-                }
-                if (!currentAction) {
                     state = AutoStates.PARK;
                     time.reset();
                 }
@@ -249,6 +211,7 @@ public class RedSideFar extends LinearOpMode {
 
             case PARK:
                 currentAction = park.run(packet);
+                intake.intake.setPower(0);
                 outtake.outtake.setPower(0);
                 if (!currentAction){
                     PoseStorage.currentPose = follower.localizer.getPose();
@@ -264,6 +227,5 @@ public class RedSideFar extends LinearOpMode {
         }
 
         FtcDashboard.getInstance().sendTelemetryPacket(packet);
-
     }
 }

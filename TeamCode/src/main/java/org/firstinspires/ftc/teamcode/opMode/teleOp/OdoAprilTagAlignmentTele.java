@@ -12,8 +12,8 @@ import org.firstinspires.ftc.teamcode.subsystem.OdoAprilTagAlignment;
 @TeleOp(name = "OdoAprilTagAlignment", group = " ")
 public class OdoAprilTagAlignmentTele extends LinearOpMode {
 
-    private static final Pose2d STARTING_POSE = new Pose2d(-49.9, -49.7, Math.toRadians(55)); // Starting position
-    private static final Pose2d GOAL_POSE = new Pose2d(-62.7, -56.6, Math.toRadians(55)); // Where the AprilTag/goal is located
+    private static final Pose2d STARTING_POSE = new Pose2d(-49.9, -49.7, Math.toRadians(55));
+    private static final Pose2d GOAL_POSE = new Pose2d(-62.7, -56.6, Math.toRadians(225));
 
     @Override
     public void runOpMode() throws InterruptedException {

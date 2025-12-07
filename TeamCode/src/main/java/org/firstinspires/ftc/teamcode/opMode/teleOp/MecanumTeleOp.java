@@ -142,6 +142,7 @@ MecanumTeleOp extends LinearOpMode {
             intakeMotor.setPower(gamepad1.right_trigger);
             intakeMotor.setPower(-gamepad1.left_trigger);
             if (gamepad1.left_bumper){
+
                 if (gamepad1.rightBumperWasPressed()) {
                     toggleshooter = !toggleshooter;
                     if (toggleshooter) {
@@ -237,6 +238,10 @@ MecanumTeleOp extends LinearOpMode {
             telemetry.addData("Hood Pos:", hoodpos);
             telemetry.addLine();
             telemetry.addData("Kicker state", kickerpos ? "Down" : "Up");
+            telemetry.addLine();
+            telemetry.addData("Transfer State", transfer.getPower() == -1 ? "On" : "Off");
+            telemetry.addLine();
+            telemetry.addData("Override State", gamepad1.left_bumper ? "1 Man" : " 2 Man");
             telemetry.addLine();
             //telemetry.addData("Distance",aprilTag.getDistance(20));
             telemetry.update();
