@@ -13,7 +13,6 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.RoadRunner.MecanumDrive;
-import org.firstinspires.ftc.teamcode.RoadRunner.PoseStorage;
 import org.firstinspires.ftc.teamcode.subsystem.Intake;
 import org.firstinspires.ftc.teamcode.subsystem.Outtake;
 import org.firstinspires.ftc.teamcode.subsystem.Kicker;
@@ -214,8 +213,6 @@ public class SpeedRunAuto extends LinearOpMode {
                 intake.intake.setPower(0);
                 outtake.outtake.setPower(0);
                 if (!currentAction){
-                    PoseStorage.currentPose = follower.localizer.getPose();
-                    PoseStorage.poseFromAuto = true;
                     state = AutoStates.END;
                     time.reset();
                 }
