@@ -82,7 +82,7 @@ public class Shooter implements Subsystem {
         this.crTargetRPM = counterRollerRPM;
     }
 
-    
+
     public void stop() {
         targetRPM = 0;
         crTargetRPM = 0;
@@ -166,6 +166,14 @@ public class Shooter implements Subsystem {
             setTargetRPM(TARGET_RPM, CR_TARGET_RPM);
         } else if (gp1.b) {
             stop();
+        }
+        if (gp1.y){
+            setCounterRollerTargetRPM(TARGET_RPM);
+            setTargetRPM(0);
+        }
+        if (gp1.x){
+            setTargetRPM(3000);
+            setCounterRollerTargetRPM(0);
         }
     }
 }

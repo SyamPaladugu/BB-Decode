@@ -18,11 +18,12 @@ public class Turret implements Subsystem {
 
     private Telemetry telemetry;
 
-    public static double GOAL_X = -70;
-    public static double GOAL_Y = -70;
+    public static double GOAL_X = 48;
+    public static double GOAL_Y = 48;
 
     private static final double SERVO_HOME_POS = 0.5;
 
+    // Current state
     private Vector2d robotPos = new Vector2d(0, 0);
     private double robotHeading = 0; // in degrees
     private boolean isAligning = false;
@@ -60,6 +61,7 @@ public class Turret implements Subsystem {
 
         double angleToGoal = Math.toDegrees(Math.atan2(toGoal.y, toGoal.x));
 
+        // Normalize to 0-360 range
         if (angleToGoal < 0) {
             angleToGoal += 360;
         }
@@ -83,6 +85,7 @@ public class Turret implements Subsystem {
 
 
     private void setTurretPosition(double turretAngleDeg) {
+
 
         double servoPos = 0.5 + (turretAngleDeg / 270.0);
 
@@ -128,6 +131,10 @@ public class Turret implements Subsystem {
 
     public boolean isAligning() {
         return isAligning;
+    }
+
+    public void setAligning(boolean aligning) {
+        this.isAligning = aligning;
     }
 
     public double getCurrentTurretAngle() {
