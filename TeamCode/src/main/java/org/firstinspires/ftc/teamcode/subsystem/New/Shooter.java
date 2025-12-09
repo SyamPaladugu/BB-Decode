@@ -21,8 +21,8 @@ public class Shooter implements Subsystem {
     public static double CR_KI = 0.0;
     public static double CR_KD = 0.0;
 
-    public static double TICKS_PER_REV = 28.0; // Adjust for your shooter motor
-    public static double CR_TICKS_PER_REV = 28.0; // Adjust for your counter roller motor
+    public static double TICKS_PER_REV = 28.0;
+    public static double CR_TICKS_PER_REV = 28.0;
     public static double TARGET_RPM = 3000;
     public static double CR_TARGET_RPM = 3000;
     public static double RPM_TOLERANCE = 50;
@@ -34,11 +34,9 @@ public class Shooter implements Subsystem {
     private double targetRPM = 0;
     private double crTargetRPM = 0;
 
-    // Shooter PID variables
     private double integral = 0;
     private double lastError = 0;
 
-    // Counter Roller PID variables
     private double crIntegral = 0;
     private double crLastError = 0;
 
@@ -60,23 +58,15 @@ public class Shooter implements Subsystem {
         lastTime = System.nanoTime();
     }
 
-    /**
-     * Set the target RPM for the shooter
-     */
+
     public void setTargetRPM(double rpm) {
         this.targetRPM = rpm;
     }
 
-    /**
-     * Set the target RPM for the counter roller
-     */
     public void setCounterRollerTargetRPM(double rpm) {
         this.crTargetRPM = rpm;
     }
 
-    /**
-     * Set the target RPM for both shooter and counter roller
-     */
     public void setTargetRPM(double shooterRPM, double counterRollerRPM) {
         this.targetRPM = shooterRPM;
         this.crTargetRPM = counterRollerRPM;
@@ -172,7 +162,7 @@ public class Shooter implements Subsystem {
             setTargetRPM(0);
         }
         if (gp1.x){
-            setTargetRPM(3000);
+            setTargetRPM(TARGET_RPM);
             setCounterRollerTargetRPM(0);
         }
     }

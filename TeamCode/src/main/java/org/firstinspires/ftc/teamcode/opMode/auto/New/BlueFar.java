@@ -158,6 +158,9 @@ public class BlueFar extends LinearOpMode {
                 if (time.seconds() >= 3){
                     customAdaptiveIntake.pivSendBalls();
                 }
+                if (time.seconds() >= 3.7){
+                    customAdaptiveIntake.autoIntakeOff();
+                }
 
                 if (!currentAction) {
                     state = AutoStates.INTAKE2;
