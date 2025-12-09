@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.subsystem;
+package org.firstinspires.ftc.teamcode.subsystem.New;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.subsystem.Subsystem;
 
 @Config
 public class Turret implements Subsystem {
@@ -17,8 +18,8 @@ public class Turret implements Subsystem {
 
     private Telemetry telemetry;
 
-    public static double GOAL_X = 48;
-    public static double GOAL_Y = 48;
+    public static double GOAL_X = -70;
+    public static double GOAL_Y = -70;
 
     private static final double SERVO_HOME_POS = 0.5;
 

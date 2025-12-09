@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.RoadRunner.MecanumDrive;
 import org.firstinspires.ftc.teamcode.subsystem.Drivetrain;
-import org.firstinspires.ftc.teamcode.subsystem.Turret;
+import org.firstinspires.ftc.teamcode.subsystem.New.Turret;
 
 @TeleOp(name = "Turret Test", group = "test")
 public class TurretTest extends LinearOpMode {
