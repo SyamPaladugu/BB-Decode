@@ -9,6 +9,7 @@ import org.firstinspires.ftc.teamcode.RoadRunner.MecanumDrive;
 import org.firstinspires.ftc.teamcode.subsystem.Drivetrain;
 import org.firstinspires.ftc.teamcode.subsystem.New.CustomAdaptiveIntake;
 import org.firstinspires.ftc.teamcode.subsystem.New.Shooter;
+import org.firstinspires.ftc.teamcode.subsystem.New.Shooter2;
 import org.firstinspires.ftc.teamcode.subsystem.New.Turret;
 
 @TeleOp(name = "TurretTeleBlue", group = "Blue")
@@ -19,7 +20,7 @@ public class prod_TestTele extends LinearOpMode {
     Drivetrain drivetrain;
     Turret turret;
     CustomAdaptiveIntake customAdaptiveIntake;
-    Shooter shooter;
+    Shooter2 shooter;
 
     MecanumDrive drive;
 
@@ -28,7 +29,7 @@ public class prod_TestTele extends LinearOpMode {
         drivetrain = new Drivetrain(hardwareMap,telemetry);
         turret = new Turret(hardwareMap, telemetry);
         customAdaptiveIntake = new CustomAdaptiveIntake(hardwareMap, telemetry);
-        shooter = new Shooter(hardwareMap, telemetry);
+        shooter = new Shooter2(hardwareMap, telemetry);
         drive = new MecanumDrive(hardwareMap, START_POSE);
         drivetrain.init();
         turret.init();

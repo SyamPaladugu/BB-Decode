@@ -16,6 +16,7 @@ import org.firstinspires.ftc.teamcode.RoadRunner.MecanumDrive;
 import org.firstinspires.ftc.teamcode.subsystem.Intake;
 import org.firstinspires.ftc.teamcode.subsystem.New.CustomAdaptiveIntake;
 import org.firstinspires.ftc.teamcode.subsystem.New.Shooter;
+import org.firstinspires.ftc.teamcode.subsystem.New.Shooter2;
 import org.firstinspires.ftc.teamcode.subsystem.New.Turret;
 import org.firstinspires.ftc.teamcode.subsystem.Outtake;
 import org.firstinspires.ftc.teamcode.subsystem.Kicker;
@@ -28,7 +29,7 @@ public class RedFar extends LinearOpMode {
     Pose2d initialPose = new Pose2d(-49.5, 49.5, Math.toRadians(305));
     MecanumDrive follower;
 
-    Shooter shooter;
+    Shooter2 shooter;
     CustomAdaptiveIntake customAdaptiveIntake;
 
     Turret turret;
@@ -55,7 +56,7 @@ public class RedFar extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         follower = new MecanumDrive(hardwareMap, initialPose);
-        shooter = new Shooter(hardwareMap, telemetry);
+        shooter = new Shooter2(hardwareMap, telemetry);
         turret = new Turret(hardwareMap, telemetry);
         customAdaptiveIntake = new CustomAdaptiveIntake(hardwareMap, telemetry);
 
@@ -155,7 +156,7 @@ public class RedFar extends LinearOpMode {
                 customAdaptiveIntake.autoIntakeOff();
                 if (time.seconds() >= 1.4){
                     turret.setAligning(true);
-                    shooter.setTargetRPM(3000,3000); // change later
+                    shooter.spinUpClose();
                 }
                 if (time.seconds() >= 3){
                     customAdaptiveIntake.pivSendBalls();
@@ -188,7 +189,7 @@ public class RedFar extends LinearOpMode {
                 customAdaptiveIntake.autoIntakeOff();
                 if (time.seconds() >= 1.84){
                     turret.setAligning(true);
-                    shooter.setTargetRPM(3000,3000);
+                    shooter.spinUpClose();
                 }
 
                 if (time.seconds() >= 3){
@@ -220,7 +221,7 @@ public class RedFar extends LinearOpMode {
                 currentAction = shoot3.run(packet);
                 if (time.seconds() >= 2.12){
                     turret.setAligning(true);
-                    shooter.setTargetRPM(3000,3000);
+                    shooter.spinUpClose();
                 }
                 if (time.seconds() >= 3.5){
                     customAdaptiveIntake.pivSendBalls();
