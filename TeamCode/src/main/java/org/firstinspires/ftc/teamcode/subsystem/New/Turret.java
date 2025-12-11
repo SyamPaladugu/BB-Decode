@@ -25,7 +25,7 @@ public class Turret implements Subsystem {
 
     // Current state
     private Vector2d robotPos = new Vector2d(0, 0);
-    private double robotHeading = 0; // in degrees
+    private double robotHeading = 0;
     private boolean isAligning = false;
     private double currentTurretAngle = 0;
     private double currentDistanceToGoal = 0;
@@ -54,47 +54,31 @@ public class Turret implements Subsystem {
         Vector2d toGoal = goalPos.minus(robotPos);
         return Math.sqrt(toGoal.x * toGoal.x + toGoal.y * toGoal.y);
     }
-
-
     private double calculateTurretAngle(Vector2d robotPos, double robotHeadingDeg, Vector2d goalPos) {
         Vector2d toGoal = goalPos.minus(robotPos);
-
         double angleToGoal = Math.toDegrees(Math.atan2(toGoal.y, toGoal.x));
-
-        // Normalize to 0-360 range
         if (angleToGoal < 0) {
             angleToGoal += 360;
         }
-
         double normalizedHeading = robotHeadingDeg;
         if (normalizedHeading < 0) {
             normalizedHeading += 360;
         }
-
         double turretAngle = angleToGoal - normalizedHeading;
-
         while (turretAngle > 180) {
             turretAngle -= 360;
         }
         while (turretAngle < -180) {
             turretAngle += 360;
         }
-
         return turretAngle;
     }
-
-
     private void setTurretPosition(double turretAngleDeg) {
-
-
         double servoPos = 0.5 + (turretAngleDeg / 270.0);
-
         servoPos = Math.max(0.0, Math.min(1.0, servoPos));
-
         turretServo1.setPosition(servoPos);
         turretServo2.setPosition(servoPos);
     }
-
 
     private void returnTurretHome() {
         turretServo1.setPosition(SERVO_HOME_POS);

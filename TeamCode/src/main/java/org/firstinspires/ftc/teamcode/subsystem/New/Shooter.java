@@ -84,13 +84,13 @@ public class Shooter implements Subsystem {
 
 
     public double getShooterRPM() {
-        double velocity = shooterMotor.getVelocity(); // ticks per second
+        double velocity = shooterMotor.getVelocity();
         return (velocity * 60.0) / TICKS_PER_REV;
     }
 
 
     public double getCounterRollerRPM() {
-        double velocity = counterRoller.getVelocity(); // ticks per second
+        double velocity = counterRoller.getVelocity();
         return (velocity * 60.0) / CR_TICKS_PER_REV;
     }
 
@@ -105,16 +105,13 @@ public class Shooter implements Subsystem {
     @Override
     public void update() {
         long currentTime = System.nanoTime();
-        double dt = (currentTime - lastTime) / 1e9; // Convert to seconds
+        double dt = (currentTime - lastTime) / 1e9;
         lastTime = currentTime;
 
-        // Update shooter motor
         updateShooterMotor(dt);
 
-        // Update counter roller motor
         updateCounterRollerMotor(dt);
 
-        // Telemetry
         telemetry.addData("Shooter Current RPM", getShooterRPM());
         telemetry.addData("Shooter Target RPM", targetRPM);
         telemetry.addData("Counter Roller Current RPM", getCounterRollerRPM());
@@ -125,17 +122,13 @@ public class Shooter implements Subsystem {
     private void updateShooterMotor(double dt) {
         double currentRPM = getShooterRPM();
         double error = targetRPM - currentRPM;
-
         integral += error * dt;
         double derivative = (dt > 0) ? (error - lastError) / dt : 0;
-
         double power = (KP * error) + (KI * integral) + (KD * derivative);
         power = Range.clip(power, 0, 1);
-
         shooterMotor.setPower(power);
         lastError = error;
     }
-
     private void updateCounterRollerMotor(double dt) {
         double currentRPM = getCounterRollerRPM();
         double error = crTargetRPM - currentRPM;
