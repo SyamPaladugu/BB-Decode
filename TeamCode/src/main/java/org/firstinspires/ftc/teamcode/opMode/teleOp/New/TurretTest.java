@@ -12,7 +12,6 @@ import org.firstinspires.ftc.teamcode.subsystem.New.Turret;
 @TeleOp(name = "Turret Test TeleOp", group = "Test")
 public class TurretTest extends LinearOpMode {
 
-    // Set your starting position here (adjust based on alliance and starting tile)
     private static final Pose2d START_POSE = new Pose2d(-36, -60, Math.toRadians(90));
 
     private Drivetrain drivetrain;
@@ -45,28 +44,27 @@ public class TurretTest extends LinearOpMode {
         telemetry.addData("Starting Heading", "%.1f degrees", Math.toDegrees(START_POSE.heading.toDouble()));
         telemetry.update();
 
+        while (!opModeIsActive()) {
+            turret.updatePose(START_POSE.position,Math.toDegrees(START_POSE.heading.toDouble()));
+            turret.returnTurretHome();
+        }
+
         waitForStart();
 
         while (opModeIsActive()) {
-            // Update Road Runner odometry (for position tracking only)
             drive.updatePoseEstimate();
 
-            // Get current pose from Road Runner
             Pose2d currentPose = drive.localizer.getPose();
             Vector2d currentPos = currentPose.position;
             double currentHeading = Math.toDegrees(currentPose.heading.toDouble());
 
-            // Update turret with position and heading
             turret.updatePose(currentPos, currentHeading);
 
-            // Update drivetrain controls (uses your subsystem for driving)
             drivetrain.updateCtrls(gamepad1, gamepad2);
 
-            // Update turret controls - turret handles the logic internally
             turret.updateCtrls(gamepad1, gamepad2);
             turret.update();
 
-            // Additional telemetry for testing
             telemetry.addLine("===== ROBOT STATE =====");
             telemetry.addData("Position", "X: %.2f, Y: %.2f", currentPos.x, currentPos.y);
             telemetry.addData("Heading", "%.2f degrees", currentHeading);

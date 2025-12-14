@@ -25,7 +25,7 @@ import org.firstinspires.ftc.teamcode.subsystem.Transfer;
 @Config
 @Autonomous(name = "BlueFar", group = "Autonomous")
 public class BlueFar extends LinearOpMode {
-    Pose2d initialPose = new Pose2d(-49.9, -49.7, Math.toRadians(55));
+    Pose2d START_POSE = new Pose2d(-49.9, -49.7, Math.toRadians(55));
 
     MecanumDrive follower;
 
@@ -55,13 +55,18 @@ public class BlueFar extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        follower = new MecanumDrive(hardwareMap, initialPose);
+        follower = new MecanumDrive(hardwareMap, START_POSE);
         shooter = new Shooter2(hardwareMap, telemetry);
         turret = new Turret(hardwareMap, telemetry);
         customAdaptiveIntake = new CustomAdaptiveIntake(hardwareMap, telemetry);
 
 
         build_paths();
+
+        while (!opModeIsActive()) {
+            turret.updatePose(START_POSE.position,Math.toDegrees(START_POSE.heading.toDouble()));
+            turret.returnTurretHome();
+        }
 
 
 
@@ -92,7 +97,7 @@ public class BlueFar extends LinearOpMode {
     }
 
     public void build_paths() {
-        TrajectoryActionBuilder intakeSpike1 = follower.actionBuilder(initialPose)
+        TrajectoryActionBuilder intakeSpike1 = follower.actionBuilder(START_POSE)
                 .setTangent(Math.toRadians(45))
                 .setTangent(Math.toRadians(45))
                 .splineToLinearHeading(new Pose2d(-23.3,-27,Math.toRadians(270)), Math.toRadians(0))

@@ -15,10 +15,12 @@ public class Shooter2 implements Subsystem {
     public static double KP = 0.01;
     public static double KI = 0.0;
     public static double KD = 0.0;
+    public static double KF = 0.0001;
 
     public static double CR_KP = 0.01;
     public static double CR_KI = 0.0;
     public static double CR_KD = 0.0;
+    public static double CR_KF = 0.0001;
 
     public static double TICKS_PER_REV = 28.0;
     public static double CR_TICKS_PER_REV = 28.0;
@@ -27,6 +29,7 @@ public class Shooter2 implements Subsystem {
     public static double FAR_SHOOTER_RPM = 3500;
     public static double FAR_CR_RPM = 3500;
     public static double RPM_TOLERANCE = 50;
+    public static double MAX_RPM = 5400;
 
     private DcMotorEx shooterMotor;
     private DcMotorEx counterRoller;
@@ -202,6 +205,7 @@ public class Shooter2 implements Subsystem {
         double derivative = (dt > 0) ? (error - lastError) / dt : 0;
 
         double power = (KP * error) + (KI * integral) + (KD * derivative);
+        power += (targetRPM > 0) ? (KF * (targetRPM / MAX_RPM)) : 0.0;
         power = Range.clip(power, 0, 1);
 
         shooterMotor.setPower(power);
@@ -216,6 +220,7 @@ public class Shooter2 implements Subsystem {
         double derivative = (dt > 0) ? (error - crLastError) / dt : 0;
 
         double power = (CR_KP * error) + (CR_KI * crIntegral) + (CR_KD * derivative);
+        power += (crTargetRPM > 0) ? (CR_KF * (crTargetRPM / MAX_RPM)) : 0.0;
         power = Range.clip(power, 0, 1);
 
         counterRoller.setPower(power);
@@ -224,16 +229,19 @@ public class Shooter2 implements Subsystem {
 
     @Override
     public void updateCtrls(Gamepad gp1, Gamepad gp2) {
-        if (gp1.a) {
+        if (gp2.x) {
             spinUpClose();
-        }
-
-        if (gp1.y) {
-            spinUpFar();
-        }
-
-        if (gp1.b) {
+        } else {
             stop();
         }
+
+        if (gp2.y) {
+            spinUpFar();
+        } else {
+            stop();
+        }
+
+
+
     }
 }

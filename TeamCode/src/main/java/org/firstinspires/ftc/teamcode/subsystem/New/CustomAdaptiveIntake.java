@@ -43,7 +43,7 @@ public class CustomAdaptiveIntake implements Subsystem {
 
     public void pivSendBalls(){
         intakePiv.setPosition(0); // changePos based on irl
-        intake.setPower(0.5);
+        intake.setPower(0.8);
     }
     public void pivIntake(){
         intakePiv.setPosition(2);// changePos based on irl

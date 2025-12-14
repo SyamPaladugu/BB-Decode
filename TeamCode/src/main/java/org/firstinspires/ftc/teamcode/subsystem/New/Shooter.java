@@ -119,7 +119,8 @@ public class Shooter implements Subsystem {
 
         if (atTargetSpeed() && targetRPM > 0){
             openBlocker();
-        } else closeBlocker();
+        } else {
+            closeBlocker();}
 
         telemetry.addData("Shooter Current RPM", getShooterRPM());
         telemetry.addData("Shooter Target RPM", targetRPM);

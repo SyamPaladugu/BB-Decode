@@ -13,10 +13,9 @@ import org.firstinspires.ftc.teamcode.subsystem.New.Shooter2;
 import org.firstinspires.ftc.teamcode.subsystem.New.Turret;
 
 @TeleOp(name = "TurretTeleBlue", group = "Blue")
-public class prod_TestTele extends LinearOpMode {
+public class prod_TestTele_Red extends LinearOpMode {
 
-    private static final Pose2d START_POSE = new Pose2d(-36, -60, Math.toRadians(90));
-
+    private static final Pose2d START_POSE = new Pose2d(0,-48.8,Math.toRadians(180));
     Drivetrain drivetrain;
     Turret turret;
     CustomAdaptiveIntake customAdaptiveIntake;
