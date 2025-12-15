@@ -54,6 +54,10 @@ public class prod_TestTele extends LinearOpMode {
             double currentHeading = Math.toDegrees(currentPose.heading.toDouble());
 
             turret.updatePose(currentPos, currentHeading);
+            turret.update();
+            drivetrain.update();
+            customAdaptiveIntake.update();
+            shooter.update();
 
 
             drivetrain.updateCtrls(gamepad1, gamepad2);

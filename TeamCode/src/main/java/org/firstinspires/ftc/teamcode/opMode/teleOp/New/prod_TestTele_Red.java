@@ -54,7 +54,10 @@ public class prod_TestTele_Red extends LinearOpMode {
 
             turret.updatePose(currentPos, currentHeading);
 
-
+            turret.update();
+            drivetrain.update();
+            customAdaptiveIntake.update();
+            shooter.update();
             drivetrain.updateCtrls(gamepad1, gamepad2);
             turret.updateCtrls(gamepad1, gamepad2);
             customAdaptiveIntake.updateCtrls(gamepad1, gamepad2);
