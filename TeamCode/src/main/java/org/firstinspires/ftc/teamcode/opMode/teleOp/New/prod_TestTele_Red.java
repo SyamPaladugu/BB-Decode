@@ -8,7 +8,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.RoadRunner.MecanumDrive;
 import org.firstinspires.ftc.teamcode.subsystem.Drivetrain;
 import org.firstinspires.ftc.teamcode.subsystem.New.CustomAdaptiveIntake;
-import org.firstinspires.ftc.teamcode.subsystem.New.Shooter;
 import org.firstinspires.ftc.teamcode.subsystem.New.Shooter2;
 import org.firstinspires.ftc.teamcode.subsystem.New.Turret;
 
@@ -62,14 +61,6 @@ public class prod_TestTele_Red extends LinearOpMode {
             turret.updateCtrls(gamepad1, gamepad2);
             customAdaptiveIntake.updateCtrls(gamepad1, gamepad2);
             shooter.updateCtrls(gamepad1, gamepad2);
-
-//            if (shooter.atTargetSpeed() && shooter.getShooterRPM() >= 0){
-//                customAdaptiveIntake.pivSendBalls();
-//            } else if(!shooter.atTargetSpeed()){
-//                customAdaptiveIntake.pivIntake();
-//                customAdaptiveIntake.autoIntakeOff();
-//
-//            }
 
             telemetry.update();
         }
