@@ -8,7 +8,6 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
-
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.subsystem.Subsystem;
@@ -42,8 +41,8 @@ public class Turret implements Subsystem {
     public Turret(HardwareMap map, Telemetry telemetry) {
         this.telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
-        turretServo1 = map.get(Servo.class, "turret_servo_1");
-        turretServo2 = map.get(Servo.class, "turret_servo_2");
+        turretServo1 = map.get(Servo.class, "turretservo1");
+        turretServo2 = map.get(Servo.class, "turretservo2");
     }
 
     @Override
@@ -68,8 +67,8 @@ public class Turret implements Subsystem {
         Vector2d toGoal = goalPos.minus(turretPos);
         return Math.sqrt(toGoal.x * toGoal.x + toGoal.y * toGoal.y);
     }
-    private double calculateTurretAngle(Vector2d robotPos, double robotHeadingDeg, Vector2d goalPos) {
-        Vector2d toGoal = goalPos.minus(robotPos);
+    private double calculateTurretAngle(Vector2d turretPos, double robotHeadingDeg, Vector2d goalPos) {
+        Vector2d toGoal = goalPos.minus(turretPos);
         double angleToGoal = Math.toDegrees(Math.atan2(toGoal.y, toGoal.x));
         angleToGoal = AngleUnit.normalizeDegrees(angleToGoal) + 180;
 //        if (angleToGoal < 0) {
@@ -107,7 +106,7 @@ public class Turret implements Subsystem {
         currentDistanceToGoal = calculateDistanceToGoal(turretPos, goalPos);
 
         if (isAligning) {
-            double turretAngle = calculateTurretAngle(robotPos, robotHeading, goalPos);
+            double turretAngle = calculateTurretAngle(turretPos, robotHeading, goalPos);
             setTurretPosition(turretAngle);
             currentTurretAngle = turretAngle;
         }

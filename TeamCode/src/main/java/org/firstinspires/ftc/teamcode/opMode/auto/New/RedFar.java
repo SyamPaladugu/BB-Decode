@@ -7,6 +7,7 @@ import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
 import com.acmerobotics.roadrunner.Vector2d;
+import com.pedropathing.geometry.Pose;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -22,6 +23,8 @@ import org.firstinspires.ftc.teamcode.subsystem.Outtake;
 import org.firstinspires.ftc.teamcode.subsystem.Kicker;
 import org.firstinspires.ftc.teamcode.subsystem.Transfer;
 
+import java.util.HashMap;
+
 @Config
 @Autonomous(name = "BlueFar", group = "Autonomous")
 public class RedFar extends LinearOpMode {
@@ -32,9 +35,14 @@ public class RedFar extends LinearOpMode {
     Shooter2 shooter;
     CustomAdaptiveIntake customAdaptiveIntake;
 
+
+
+
     Turret turret;
     Action intake1, shoot1, intake2, shoot2, intake3, shoot3, park;
     boolean currentAction;
+
+    boolean isAutoRun = false;
     enum AutoStates {
         START,
         INTAKE1,
@@ -61,6 +69,7 @@ public class RedFar extends LinearOpMode {
         customAdaptiveIntake = new CustomAdaptiveIntake(hardwareMap, telemetry);
 
 
+
         build_paths();
 
         while (!opModeIsActive()) {
@@ -70,12 +79,14 @@ public class RedFar extends LinearOpMode {
 
 
 
+
         waitForStart();
         if (isStopRequested()) return;
         time.startTime();
         time.reset();
 
         while (opModeIsActive()) {
+
             follower.updatePoseEstimate();
             Pose2d currentPose = follower.localizer.getPose();
 

@@ -7,7 +7,7 @@ import org.firstinspires.ftc.teamcode.subsystem.New.Shooter2;
 
 @TeleOp(name="Shooter Tuning", group = " Tuning")
 public class ShooterTuning extends OpMode {
-    private Shooter2 shooter;
+    public Shooter2 shooter;
 
     private double manualShooterRPM = 0;
     private double manualCRRPM = 0;

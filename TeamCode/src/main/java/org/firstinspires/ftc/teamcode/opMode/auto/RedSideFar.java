@@ -19,7 +19,7 @@ import org.firstinspires.ftc.teamcode.subsystem.Kicker;
 import org.firstinspires.ftc.teamcode.subsystem.Transfer;
 
 @Config
-@Autonomous(name = "RedFar", group = "Autonomous")
+@Autonomous(name = "RedSideFar", group = "Autonomous")
 public class RedSideFar extends LinearOpMode {
     Pose2d initialPose = new Pose2d(-49.5, 49.5, Math.toRadians(305));
 

@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.subsystem.New;
 
 import com.acmerobotics.dashboard.config.Config;
+import com.arcrobotics.ftclib.controller.PIDFController;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -12,15 +13,15 @@ import org.firstinspires.ftc.teamcode.subsystem.Subsystem;
 
 @Config
 public class Shooter2 implements Subsystem {
-    public static double KP = 0.01;
+    public static double KP = 0.0;
     public static double KI = 0.0;
     public static double KD = 0.0;
-    public static double KF = 0.0001;
+    public static double KF = 0.0;
 
-    public static double CR_KP = 0.01;
+    public static double CR_KP = 0.0;
     public static double CR_KI = 0.0;
     public static double CR_KD = 0.0;
-    public static double CR_KF = 0.0001;
+    public static double CR_KF = 0.0;
 
     public static double TICKS_PER_REV = 28.0;
     public static double CR_TICKS_PER_REV = 28.0;
@@ -47,6 +48,9 @@ public class Shooter2 implements Subsystem {
 
     private long lastTime = 0;
 
+    public PIDFController pidfController;
+    public PIDFController CRpidfController;
+
     private ShooterState state = ShooterState.IDLE;
 
     public enum ShooterState {
@@ -59,7 +63,9 @@ public class Shooter2 implements Subsystem {
     }
 
     public Shooter2(HardwareMap hardwareMap, Telemetry telemetry) {
-        shooterMotor = hardwareMap.get(DcMotorEx.class, "shooter");
+        pidfController = new PIDFController(KP,KI,KD,KF);
+        CRpidfController = new PIDFController(CR_KP, CR_KI,CR_KD, CR_KF);
+        shooterMotor = hardwareMap.get(DcMotorEx.class, "outtake");
         counterRoller = hardwareMap.get(DcMotorEx.class, "counterRoller");
         blocker = hardwareMap.get(Servo.class, "blocker");
         this.telemetry = telemetry;
@@ -188,6 +194,7 @@ public class Shooter2 implements Subsystem {
         telemetry.addData("Counter Roller Current RPM", getCounterRollerRPM());
         telemetry.addData("Counter Roller Target RPM", crTargetRPM);
         telemetry.addData("At Speed", atTargetSpeed());
+        telemetry.addData("ShooterPower", shooterMotor.getPower());
     }
 
     private void resetPID() {
@@ -200,44 +207,38 @@ public class Shooter2 implements Subsystem {
     private void updateShooterMotor(double dt) {
         double currentRPM = getShooterRPM();
         double error = targetRPM - currentRPM;
-
-        integral += error * dt;
-        double derivative = (dt > 0) ? (error - lastError) / dt : 0;
-
-        double power = (KP * error) + (KI * integral) + (KD * derivative);
-        power += (targetRPM > 0) ? (KF * (targetRPM / MAX_RPM)) : 0.0;
+        pidfController.setPIDF(KP,KI,KD,KF);
+        double power = pidfController.calculate(currentRPM,targetRPM);
         power = Range.clip(power, 0, 1);
 
         shooterMotor.setPower(power);
-        lastError = error;
     }
 
     private void updateCounterRollerMotor(double dt) {
-        double currentRPM = getCounterRollerRPM();
-        double error = crTargetRPM - currentRPM;
-
-        crIntegral += error * dt;
-        double derivative = (dt > 0) ? (error - crLastError) / dt : 0;
-
-        double power = (CR_KP * error) + (CR_KI * crIntegral) + (CR_KD * derivative);
-        power += (crTargetRPM > 0) ? (CR_KF * (crTargetRPM / MAX_RPM)) : 0.0;
+        double currentRPMCR = getCounterRollerRPM();
+        double error = crTargetRPM - currentRPMCR;
+        CRpidfController.setPIDF(CR_KP,CR_KI,CR_KD, CR_KF);
+        double power = CRpidfController.calculate(currentRPMCR, crTargetRPM);
         power = Range.clip(power, 0, 1);
 
         counterRoller.setPower(power);
-        crLastError = error;
     }
 
     @Override
     public void updateCtrls(Gamepad gp1, Gamepad gp2) {
-        if (gp2.x) {
+        if (gp2.xWasPressed()) {
             spinUpClose();
-        } else {
+        }
+        if (gp2.xWasReleased()){
             stop();
         }
 
-        if (gp2.y) {
+
+
+        if (gp2.yWasPressed()) {
             spinUpFar();
-        } else {
+        }
+        if (gp2.yWasReleased()){
             stop();
         }
 
